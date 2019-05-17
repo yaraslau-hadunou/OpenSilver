@@ -48,7 +48,6 @@ namespace Windows.UI.Xaml.Controls.Primitives
         public ButtonBase()
         {
             _reactsToKeyboardEventsWhenFocused = true;
-            UseSystemFocusVisuals = true;
 
             _timerToReleaseCaptureAutomaticallyIfNoMouseUpEvent.Interval = new TimeSpan(0, 0, 5); // See comment where this variable is defined.
             _timerToReleaseCaptureAutomaticallyIfNoMouseUpEvent.Tick += TimerToReleaseCaptureAutomaticallyIfNoMouseUpEvent_Tick;

@@ -904,7 +904,6 @@ namespace Windows.UI.Xaml.Controls
             return false;
         }
 
-        private bool _useSystemFocusVisuals = false;
         /// <summary>
         /// Determines whether the control displays the browser's default outline when Focused.
         /// This property is ignored for Controls with a Template that defines the "Focused" VisualState.
@@ -912,9 +911,15 @@ namespace Windows.UI.Xaml.Controls
         /// </summary>
         public bool UseSystemFocusVisuals
         {
-            get { return _useSystemFocusVisuals; }
-            set { _useSystemFocusVisuals = value; } //todo: change the element in the visual tree?
+            get { return (bool)GetValue(UseSystemFocusVisualsProperty); }
+            set { SetValue(UseSystemFocusVisualsProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for UseSystemFocusVisuals.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty UseSystemFocusVisualsProperty =
+            DependencyProperty.Register("UseSystemFocusVisuals", typeof(bool), typeof(Control), new PropertyMetadata(false));
+
+
 
 
         private INTERNAL_VisualStateGroupCollection _visualStateGroups;

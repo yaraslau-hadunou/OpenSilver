@@ -44,6 +44,10 @@ namespace System.Windows.Controls
                 Setter_a405e10599f3416d912ccd03ba0ed2a3.Property = global::System.Windows.Controls.Primitives.ToggleButton.ForegroundProperty;
                 Setter_a405e10599f3416d912ccd03ba0ed2a3.Value = (global::System.Windows.Media.Brush)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(global::System.Windows.Media.Brush), @"Black");
 
+                var Setter_4665340a1b4141f88b5efcede9ddee0a = new global::System.Windows.Setter();
+                Setter_4665340a1b4141f88b5efcede9ddee0a.Property = global::System.Windows.Controls.Primitives.ToggleButton.UseSystemFocusVisualsProperty;
+                Setter_4665340a1b4141f88b5efcede9ddee0a.Value = (bool)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(bool), @"True");
+
                 var Setter_e58113ee28a14fc8a50e32c4690ebd06 = new global::System.Windows.Setter();
                 Setter_e58113ee28a14fc8a50e32c4690ebd06.Property = global::System.Windows.Controls.Primitives.ToggleButton.BorderThicknessProperty;
                 Setter_e58113ee28a14fc8a50e32c4690ebd06.Value = (global::System.Windows.Thickness)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(global::System.Windows.Thickness), @"0");
@@ -974,6 +978,10 @@ namespace Windows.UI.Xaml.Controls
                 var Setter_a405e10599f3416d912ccd03ba0ed2a3 = new global::Windows.UI.Xaml.Setter();
                 Setter_a405e10599f3416d912ccd03ba0ed2a3.Property = global::Windows.UI.Xaml.Controls.Primitives.ToggleButton.ForegroundProperty;
                 Setter_a405e10599f3416d912ccd03ba0ed2a3.Value = (global::Windows.UI.Xaml.Media.Brush)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(global::Windows.UI.Xaml.Media.Brush), @"Black");
+
+                var Setter_4665340a1b4141f88b5efcede9ddee0a = new global::Windows.UI.Xaml.Setter();
+                Setter_4665340a1b4141f88b5efcede9ddee0a.Property = global::Windows.UI.Xaml.Controls.Primitives.ToggleButton.UseSystemFocusVisualsProperty;
+                Setter_4665340a1b4141f88b5efcede9ddee0a.Value = (bool)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(bool), @"True");
 
                 var Setter_e58113ee28a14fc8a50e32c4690ebd06 = new global::Windows.UI.Xaml.Setter();
                 Setter_e58113ee28a14fc8a50e32c4690ebd06.Property = global::Windows.UI.Xaml.Controls.Primitives.ToggleButton.BorderThicknessProperty;

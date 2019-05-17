@@ -44,6 +44,10 @@ namespace System.Windows.Controls
                 Setter_406bdcfd4a14410d8fe9c2d742ce11a8.Property = global::System.Windows.Controls.Button.ForegroundProperty;
                 Setter_406bdcfd4a14410d8fe9c2d742ce11a8.Value = (global::System.Windows.Media.Brush)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(global::System.Windows.Media.Brush), @"Black");
 
+                var Setter_c965ca1826654bd2a2a0c6c4f6d703f0 = new global::System.Windows.Setter();
+                Setter_c965ca1826654bd2a2a0c6c4f6d703f0.Property = global::System.Windows.Controls.Button.UseSystemFocusVisualsProperty;
+                Setter_c965ca1826654bd2a2a0c6c4f6d703f0.Value = (bool)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(bool), @"True");
+
                 var Setter_7f001f6302364f79bebb4e52102663f2 = new global::System.Windows.Setter();
                 Setter_7f001f6302364f79bebb4e52102663f2.Property = global::System.Windows.Controls.Button.BorderThicknessProperty;
                 Setter_7f001f6302364f79bebb4e52102663f2.Value = (global::System.Windows.Thickness)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(global::System.Windows.Thickness), @"0");
@@ -75,6 +79,7 @@ namespace System.Windows.Controls
 
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_293523e2a6504050b941ad632a73ae5c);
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_406bdcfd4a14410d8fe9c2d742ce11a8);
+                Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_c965ca1826654bd2a2a0c6c4f6d703f0);
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_7f001f6302364f79bebb4e52102663f2);
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_4b74961b18e04e77a89e89845ea54b04);
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_873791a433394d8eab48fcc32e39ec13);
@@ -464,6 +469,10 @@ namespace Windows.UI.Xaml.Controls
                 Setter_406bdcfd4a14410d8fe9c2d742ce11a8.Property = global::Windows.UI.Xaml.Controls.Button.ForegroundProperty;
                 Setter_406bdcfd4a14410d8fe9c2d742ce11a8.Value = (global::Windows.UI.Xaml.Media.Brush)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(global::Windows.UI.Xaml.Media.Brush), @"Black");
 
+                var Setter_c965ca1826654bd2a2a0c6c4f6d703f0 = new global::Windows.UI.Xaml.Setter();
+                Setter_c965ca1826654bd2a2a0c6c4f6d703f0.Property = global::Windows.UI.Xaml.Controls.Button.UseSystemFocusVisualsProperty;
+                Setter_c965ca1826654bd2a2a0c6c4f6d703f0.Value = (bool)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(bool), @"True");
+
                 var Setter_7f001f6302364f79bebb4e52102663f2 = new global::Windows.UI.Xaml.Setter();
                 Setter_7f001f6302364f79bebb4e52102663f2.Property = global::Windows.UI.Xaml.Controls.Button.BorderThicknessProperty;
                 Setter_7f001f6302364f79bebb4e52102663f2.Value = (global::Windows.UI.Xaml.Thickness)global::DotNetForHtml5.Core.TypeFromStringConverters.ConvertFromInvariantString(typeof(global::Windows.UI.Xaml.Thickness), @"0");
@@ -495,6 +504,7 @@ namespace Windows.UI.Xaml.Controls
 
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_293523e2a6504050b941ad632a73ae5c);
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_406bdcfd4a14410d8fe9c2d742ce11a8);
+                Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_c965ca1826654bd2a2a0c6c4f6d703f0);
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_7f001f6302364f79bebb4e52102663f2);
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_4b74961b18e04e77a89e89845ea54b04);
                 Style_27761b772dd042038ccd0a8411db434d.Setters.Add(Setter_873791a433394d8eab48fcc32e39ec13);
