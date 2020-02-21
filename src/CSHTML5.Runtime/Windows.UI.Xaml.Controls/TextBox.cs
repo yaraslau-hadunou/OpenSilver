@@ -1038,7 +1038,7 @@ return globalIndexes;
         /// </summary>
         public static readonly DependencyProperty TextWrappingProperty =
             DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(TextBox), new PropertyMetadata(
-                TextWrapping.Wrap) // Note: we have made "Wrap" the default value because the no-wrap mode does not work well (it enlarges the parent container, as of 2015.08.06)
+                TextWrapping.NoWrap)
             {
                 MethodToUpdateDom = TextWrapping_MethodToUpdateDom
             });
