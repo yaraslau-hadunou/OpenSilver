@@ -119,6 +119,7 @@ namespace CSHTML5.Internal
         string _height = "";
         string _maxWidth = "";
         string _maxHeight = "";
+        string _padding = "";
 
         public string background { set { SetStylePropertyValue("background", value); } }
         public string backgroundColor { set { SetStylePropertyValue("backgroundColor", value); } }
@@ -164,7 +165,7 @@ namespace CSHTML5.Internal
         public string overflow { set { SetStylePropertyValue("overflow", value); } }
         public string overflowX { set { SetStylePropertyValue("overflowX", value); } }
         public string overflowY { set { SetStylePropertyValue("overflowY", value); } }
-        public string padding { set { SetStylePropertyValue("padding", value); } }
+        public string padding { set { SetStylePropertyValue("padding", value); _padding = value; } get { return _padding; } }
         public string paddingBottom { set { SetStylePropertyValue("paddingBottom", value); } }
         public string paddingLeft { set { SetStylePropertyValue("paddingLeft", value); } }
         public string paddingRight { set { SetStylePropertyValue("paddingRight", value); } }

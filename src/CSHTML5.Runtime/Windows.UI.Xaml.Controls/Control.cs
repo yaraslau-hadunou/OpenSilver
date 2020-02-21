@@ -643,17 +643,18 @@ private static void Padding_MethodToUpdateDom(DependencyObject d, object newValu
             styleOfInnerDomElement.paddingBottom = newPadding.Bottom + "px";
         }
     }
+            control._displayTableFixerQueueHandler.QueueActionIfQueueIsEmpty(control.FixDisplayTableCase);
 }
 
 
-//-----------------------
-// HORIZONTALCONTENTALIGNMENT
-//-----------------------
+        //-----------------------
+        // HORIZONTALCONTENTALIGNMENT
+        //-----------------------
 
-/// <summary>
-/// Gets or sets the horizontal alignment of the control's content.
-/// </summary>
-public HorizontalAlignment HorizontalContentAlignment
+        /// <summary>
+        /// Gets or sets the horizontal alignment of the control's content.
+        /// </summary>
+        public HorizontalAlignment HorizontalContentAlignment
 {
     get { return (HorizontalAlignment)GetValue(HorizontalContentAlignmentProperty); }
     set { SetValue(HorizontalContentAlignmentProperty, value); }

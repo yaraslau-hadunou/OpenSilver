@@ -267,6 +267,8 @@ namespace Windows.UI.Xaml
 
         #region HorizontalAlignment and Width handling
 
+        internal INTERNAL_DispatcherQueueHandler _displayTableFixerQueueHandler = new INTERNAL_DispatcherQueueHandler();
+
         /// <summary>
         /// Gets or sets the horizontal alignment characteristics that are applied to
         /// a FrameworkElement when it is composed in a layout parent, such as a panel
@@ -483,15 +485,16 @@ if ($0.tagName.toLowerCase() != 'span')
                             break;
                     }
                 }
+                frameworkElement._displayTableFixerQueueHandler.QueueActionIfQueueIsEmpty(frameworkElement.FixDisplayTableCase);
 
                 //-----------------------------
                 // Handle the "Overflow" CSS property:
                 //-----------------------------
 
                 /*
-                 
+
                 // COMMENTED ON 2016.09.02 because it prevents properly displaying child elements with NEGATIVE MARGINS. To reproduce: put a border with negative margins inside another border.
-                 
+
                 if (!(frameworkElement is ScrollViewer)) //Note: The ScrollViewer handles the "overflow" property by itself.
                 {
                     // We always display the portions of the child exceeding the edges, unless the element has a fixed size in pixels AND it is not a canvas:
@@ -641,6 +644,112 @@ if ($0.tagName.toLowerCase() != 'span')
                 Performance.Counter("Size/Alignment: INTERNAL_ApplyHorizontalAlignmentAndWidth", t0);
 #endif
             }
+        }
+
+        /// <summary>
+        /// This method was created to deal with the fact that display:table causes the element to be unable to limit the size of its content.
+        /// It is meant to be called when the changes related to width are already applied. The related properties I thought of are Width, MaxWidth and Padding.
+        /// It should probably do something similar for Height and related properties.
+        /// </summary>
+        internal void FixDisplayTableCase()
+        {
+            // If the element has display:table, it is unable to limit the size of its content, so setting its width does not "naturally" prevent it from taking the content's size when it is too big.
+            // To fix that, we set max-width to the size on the OuterdomElement and then max-width:inherited on the child element.
+            // This will make the child element limit its own size.
+
+            if (this.INTERNAL_OuterDomElement != null)
+            {
+
+                var styleOfOuterDomElement = INTERNAL_HtmlDomManager.GetFrameworkElementOuterStyleForModification(this);
+                var childOfOuterDomElement = INTERNAL_HtmlDomManager.GetFirstChildDomElement(this.INTERNAL_OuterDomElement);
+                var styleOfChildOfOuterDomElement = INTERNAL_HtmlDomManager.IsNotUndefinedOrNull(childOfOuterDomElement) ? INTERNAL_HtmlDomManager.GetDomElementStyleForModification(childOfOuterDomElement) : null;
+
+                //Note: this test is made this way (instead of having everything directly in the if) because JSIL cannot translate the method otherwise.
+                bool isDisplayTable = styleOfOuterDomElement.display == "table";
+                bool isWidthSet = !double.IsNaN(this.Width);
+                bool isMaxWidthUnset = double.IsPositiveInfinity(this.MaxWidth);
+
+                //get the horizontal impact of the padding on the inner element:
+                string paddingOnElement = styleOfOuterDomElement.padding;
+                string[] paddings = paddingOnElement.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                double paddingImpact = 0;
+                if (paddings.Length == 1)
+                {
+                    paddingImpact = GetSizeInPxFromString(paddings[0]) * 2;
+                }
+                else if (paddings.Length == 2 || paddings.Length == 3) // the length can be 3 if we set the paddings for the horizontal values to the same value, for example: Padding="5,4,5,2"
+                {
+                    paddingImpact = GetSizeInPxFromString(paddings[1]) * 2;
+                }
+                else if (paddings.Length == 4)
+                {
+                    paddingImpact = GetSizeInPxFromString(paddings[1]);
+                    paddingImpact += GetSizeInPxFromString(paddings[3]);
+
+                }
+
+                string widthAsString = styleOfOuterDomElement.width;
+                if (paddingImpact != 0)
+                {
+                    double width = GetSizeInPxFromString(widthAsString);
+                    if (width > 0)
+                    {
+                        width -= paddingImpact;
+                        widthAsString = width + "px";
+                    }
+                }
+
+                if (isDisplayTable && isWidthSet && isMaxWidthUnset)
+                {
+                    //cases to deal with (and test): 
+                    //  - basic case: we have a size on the element and that's it
+                    //  - We have a size on the element and a Max size (I guess we take the smaller of the two? Or one could have priority over the other, we might need to handle the min size as well)
+                    //  - No size on the element itself but on one of its parents (I'm not sure how this goes)
+                    //  - The child element has a Max size that is greater than this element's size
+                    //  - Width or MaxWidth changes (that might be ok ?)
+                    //  - There are more than one child for the "table" div (I'm not sure if it can happen)
+                    //For now, we will consider the basic case and we'll see:
+                    //We set maxWidth to the Width of the element and inherit as the maxWidth of the child element, if they are not already set:
+
+                    if (INTERNAL_HtmlDomManager.IsNotUndefinedOrNull(styleOfChildOfOuterDomElement))
+                    {
+                        string childMaxWidth = styleOfChildOfOuterDomElement.maxWidth;
+                        if (!childMaxWidth.Contains("px"))
+                        {
+                            styleOfOuterDomElement.maxWidth = widthAsString;
+                            styleOfChildOfOuterDomElement.maxWidth = "inherit";
+                        }
+                    }
+                }
+
+                //handle the case where the Width is unset:
+                if (!isWidthSet && isMaxWidthUnset)
+                {
+                    //We remove the potential maxWidth on the element:
+                    styleOfOuterDomElement.maxWidth = "";
+                    if (INTERNAL_HtmlDomManager.IsNotUndefinedOrNull(styleOfChildOfOuterDomElement))
+                    {
+                        if (styleOfChildOfOuterDomElement.maxWidth == "inherit")
+                        {
+                            styleOfChildOfOuterDomElement.maxWidth = "";
+                        }
+                    }
+
+                }
+            }
+        }
+        static double GetSizeInPxFromString(string str)
+        {
+            if (str.EndsWith("px"))
+            {
+                str = str.Substring(0, str.Length - 2);
+            }
+            double result;
+            if (double.TryParse(str, out result))
+            {
+                return result;
+            }
+            return 0d;
         }
 
         #endregion
@@ -1309,6 +1418,9 @@ if ($0.tagName.toLowerCase() != 'span')
                 // Commented because at the time of writing "IsInfinity" was not implemented in JSIL:
                 //style.maxWidth = !double.IsInfinity(newValue) ? newValue.ToString() + "px" : "initial";
                 style.maxWidth = (newValue != double.MaxValue) ? newValue.ToString() + "px" : "initial";
+
+                frameworkElement._displayTableFixerQueueHandler.QueueActionIfQueueIsEmpty(frameworkElement.FixDisplayTableCase);
+
             }
         }
 
