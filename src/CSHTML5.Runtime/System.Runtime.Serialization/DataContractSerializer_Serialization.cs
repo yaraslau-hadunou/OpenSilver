@@ -241,7 +241,9 @@ namespace System.Runtime.Serialization
                     }
                     else
                     {
-                        xElement = new XElement(XNamespace.Get(DataContractSerializer_Helpers.GetDefaultNamespace(itemsType.Namespace, useXmlSerializerFormat)).GetName(elementName), result);
+                        TypeInformation itemsTypeInformation = DataContractSerializer_Helpers.GetTypeInformationByReadingAttributes(itemsType, nodeDefaultNamespaceIfAny, useXmlSerializerFormat);
+
+                        xElement = new XElement(XNamespace.Get(itemsTypeInformation.NamespaceName).GetName(elementName), result); // Note: we might want to read from the attribute as well for the Name ? (not tested)
                     }
                     xElement.Add(new XAttribute(XNamespace.Get(DataContractSerializer_Helpers.XMLNS_NAMESPACE).GetName("xmlns:i"), DataContractSerializer_Helpers.XMLSCHEMA_NAMESPACE));
                     return new List<XObject>() { xElement };
