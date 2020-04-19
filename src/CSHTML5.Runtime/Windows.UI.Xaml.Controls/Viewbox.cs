@@ -185,6 +185,30 @@ namespace Windows.UI.Xaml.Controls
             ChildElement.RenderTransform = Scale = new ScaleTransform();
         }
 
+        protected internal override void INTERNAL_OnAttachedToVisualTree()
+        {
+            //-------------------------------------
+            // Workaround the blurry text on Chrome (which can be reproduced for example by applying a scale transform of 80%) by setting "translate:translateZ(1px)" at the ViewBox level:
+            //-------------------------------------
+            string value = "translateZ(1px)";
+            var domStyle = CSHTML5.Internal.INTERNAL_HtmlDomManager.GetDomElementStyleForModification(this.INTERNAL_OuterDomElement);
+            try
+            {
+                domStyle.transform = value;
+            }
+            catch { }
+            try
+            {
+                domStyle.msTransform = value;
+            }
+            catch { }
+            try
+            {
+                domStyle.WebkitTransform = value;
+            }
+            catch { }
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(() => // (This fixes the issue in the MatrixView in the STAR application, where the Viewbox scale was incorrect until the window was resized. Note that when doing step-by-step debugging it worked properly)
