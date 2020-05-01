@@ -111,8 +111,10 @@ namespace Windows.UI.Xaml.Media
             }
         }
 
-        internal protected override void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY)
+        internal protected override void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY, Transform transform)
         {
+            //todo: apply the transform.
+
             double maxAbs = Center.X + RadiusX;
             double minAbs = Center.X - RadiusX;
             double minOrd = Center.Y - RadiusY;

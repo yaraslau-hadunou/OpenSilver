@@ -283,8 +283,14 @@ namespace Windows.UI.Xaml.Media
                                             ref double maxX, 
                                             ref double minY, 
                                             ref double maxY, 
-                                            Point startingPoint)
+                                            Point startingPoint,
+                                            Transform transform)
         {
+            if (transform != null)
+            {
+                startingPoint = transform.Transform(startingPoint);
+            }
+
             UpdateStartPosition(startingPoint);
             UpdateStrokeThickness(this.ParentPath.StrokeThickness);
 

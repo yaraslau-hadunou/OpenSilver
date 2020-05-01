@@ -226,7 +226,7 @@ namespace Windows.UI.Xaml.Media
             }
         }
 
-        internal void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY)
+        internal void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY, Transform transform)
         {
             minX = Math.Min(minX, StartPoint.X);
             maxX = Math.Max(maxX, StartPoint.X);
@@ -236,7 +236,7 @@ namespace Windows.UI.Xaml.Media
             Point segmentStartingPosition = new Point(StartPoint.X, StartPoint.Y);
             foreach (PathSegment segment in Segments)
             {
-                segmentStartingPosition = segment.GetMinMaxXY(ref minX, ref maxX, ref minY, ref maxY, segmentStartingPosition);
+                segmentStartingPosition = segment.GetMinMaxXY(ref minX, ref maxX, ref minY, ref maxY, segmentStartingPosition, transform);
             }
         }
 

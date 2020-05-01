@@ -76,7 +76,8 @@ namespace Windows.UI.Xaml.Media
         internal protected abstract void GetMinMaxXY(ref double minX, 
                                                      ref double maxX, 
                                                      ref double minY, 
-                                                     ref double maxY);
+                                                     ref double maxY,
+                                                     Transform transform);
 
         internal virtual string GetFillRuleAsString()
         {

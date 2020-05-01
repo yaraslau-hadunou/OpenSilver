@@ -141,7 +141,7 @@ namespace Windows.UI.Xaml.Shapes
             line.ScheduleRedraw();
         }
 
-        internal void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY)
+        internal void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY, Transform transform)
         {
             double maxAbs = X1 > X2 ? X1 : X2;
             double minAbs = X1 < X2 ? X1 : X2;

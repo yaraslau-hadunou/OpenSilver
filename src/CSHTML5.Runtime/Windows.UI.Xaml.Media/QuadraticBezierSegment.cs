@@ -136,7 +136,7 @@ namespace Windows.UI.Xaml.Media
             return new Point(maxX, maxY);
         }
 
-        internal override Point GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY, Point startingPoint)
+        internal override Point GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY, Point startingPoint, Transform transform)
         {
             minX = Math.Min(minX, Math.Min(Point1.X, Point2.X));
             maxX = Math.Max(maxX, Math.Max(Point1.X, Point2.X));

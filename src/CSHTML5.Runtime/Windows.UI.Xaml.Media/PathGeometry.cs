@@ -157,11 +157,11 @@ namespace Windows.UI.Xaml.Media
             return (FillRule == FillRule.Nonzero) ? "nonzero" : "evenodd";
         }
 
-        internal protected override void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY)
+        internal protected override void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY, Transform transform)
         {
             foreach (PathFigure figure in Figures)
             {
-                figure.GetMinMaxXY(ref minX, ref maxX, ref minY, ref maxY);
+                figure.GetMinMaxXY(ref minX, ref maxX, ref minY, ref maxY, transform);
             }
         }
 

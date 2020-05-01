@@ -104,7 +104,7 @@ namespace Windows.UI.Xaml.Media
             }
         }
 
-        internal protected override void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY)
+        internal protected override void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY, Transform transform)
         {
             double maxAbs = StartPoint.X > EndPoint.X ? StartPoint.X : EndPoint.X;
             double minAbs = StartPoint.X < EndPoint.X ? StartPoint.X : EndPoint.X;

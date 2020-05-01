@@ -103,7 +103,8 @@ namespace Windows.UI.Xaml.Media
                                             ref double maxX, 
                                             ref double minY, 
                                             ref double maxY, 
-                                            Point startingPoint)
+                                            Point startingPoint,
+                                            Transform transform)
         {
             minX = Math.Min(minX, Point.X);
             maxX = Math.Max(maxX, Point.X);

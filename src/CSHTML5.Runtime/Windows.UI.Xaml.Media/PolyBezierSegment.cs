@@ -156,7 +156,8 @@ namespace Windows.UI.Xaml.Media
                                             ref double maxX, 
                                             ref double minY, 
                                             ref double maxY, 
-                                            Point startingPoint)
+                                            Point startingPoint,
+                                            Transform transform)
         {
             foreach (Point point in Points)
             {

@@ -39,7 +39,7 @@ namespace Windows.UI.Xaml.Media
             throw new NotImplementedException();
         }
 
-        internal protected override void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY)
+        internal protected override void GetMinMaxXY(ref double minX, ref double maxX, ref double minY, ref double maxY, Transform transform)
         {
             throw new NotImplementedException();
         }
