@@ -542,6 +542,10 @@ namespace Windows.UI.Xaml
         {
             UIElement @this = (UIElement)d;
 
+
+            if (!(baseValue is bool)) //todo: this is a temporary workaround - cf. comment in "CoerceIsEnabledProperty"
+                return true;
+
             // We must be false if our parent is false, but we can be
             // either true or false if our parent is true.
             //
@@ -644,6 +648,10 @@ namespace Windows.UI.Xaml
         private static object CoerceIsHitTestVisibleProperty(DependencyObject d, object baseValue)
         {
             UIElement @this = (UIElement)d;
+
+
+            if (!(baseValue is bool)) //todo: this is a temporary workaround - cf. comment in "CoerceIsEnabledProperty"
+                return true;
 
             // We must be false if our parent is false, but we can be
             // either true or false if our parent is true.
