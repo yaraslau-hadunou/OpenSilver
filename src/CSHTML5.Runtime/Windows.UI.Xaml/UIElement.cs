@@ -90,6 +90,7 @@ namespace Windows.UI.Xaml
         internal int INTERNAL_lastClickDate; //this is used in the PointerPressed event to fill the ClickCount Property.
         public string XamlSourcePath; //this is used by the Simulator to tell where this control is defined. It is non-null only on root elements, that is, elements which class has "InitializeComponent" method. This member is public because it needs to be accessible via reflection.
         internal bool _isLoaded;
+        internal Action INTERNAL_DeferredRenderingWhenControlBecomesVisible;
         internal Action INTERNAL_DeferredLoadingWhenControlBecomesVisible;
 
         /// <summary>
@@ -449,8 +450,20 @@ namespace Windows.UI.Xaml
         {
             var uiElement = (UIElement)d;
             Visibility newValue = (Visibility)e.NewValue;
+
+            // Finish loading the element if it was not loaded yet because it was Collapsed (and optimization was enabled in the Settings):
+            if (uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible != null
+                && newValue != Visibility.Collapsed)
+            {
+                Action deferredLoadingWhenControlBecomesVisible = uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible;
+                uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible = null;
+                deferredLoadingWhenControlBecomesVisible();
+            }
+
+            // Update the "IsVisible" property (which is inherited using the "coerce" method):
             d.SetValue(IsVisibleProperty, newValue != Visibility.Collapsed);
-  
+            
+            // Make the CSS changes required to apply the visibility at the DOM level:
             INTERNAL_ApplyVisibility(uiElement, newValue);
         }
 
@@ -508,7 +521,6 @@ namespace Windows.UI.Xaml
         public bool IsVisible
         {
             get { return (bool)GetValue(IsVisibleProperty); }
-            set { SetValue(IsVisibleProperty, value); }
         }
 
         /// <summary>
@@ -522,15 +534,14 @@ namespace Windows.UI.Xaml
 
         private static void OnIsVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
             var uiElement = (UIElement)d;
             bool newValue = (bool)e.NewValue;
 
-            if (uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible != null
+            if (uiElement.INTERNAL_DeferredRenderingWhenControlBecomesVisible != null
                 && newValue == true)
             {
-                Action deferredLoadingWhenControlBecomesVisible = uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible;
-                uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible = null;
+                Action deferredLoadingWhenControlBecomesVisible = uiElement.INTERNAL_DeferredRenderingWhenControlBecomesVisible;
+                uiElement.INTERNAL_DeferredRenderingWhenControlBecomesVisible = null;
                 deferredLoadingWhenControlBecomesVisible();
             }
 
@@ -541,7 +552,6 @@ namespace Windows.UI.Xaml
         private static object CoerceIsVisibleProperty(DependencyObject d, object baseValue)
         {
             UIElement @this = (UIElement)d;
-
 
             if (!(baseValue is bool)) //todo: this is a temporary workaround - cf. comment in "CoerceIsEnabledProperty"
                 return true;
@@ -1293,6 +1303,7 @@ namespace Windows.UI.Xaml
                 uiE.CoerceValue(IsHitTestVisibleProperty);
             }
 
+            // IsVisibleProperty
             if (!(bool)parent.GetValue(IsVisibleProperty))
             {
                 uiE.CoerceValue(IsVisibleProperty);
