@@ -367,17 +367,18 @@ if(nextSibling != undefined) {
             // CONTINUE WITH THE OTHER STEPS (OR DEFER TO WHEN THE ELEMENT IS VISIBLE, IF THE OPTIMIZATION TO NOT LOAD COLLAPSED CONTROLS IS ENABLED):
             //--------------------------------------------------------
 
-            if (!EnableOptimizationWhereCollapsedControlsAreNotLoaded || child.Visibility != Visibility.Collapsed)
-            {
-                AttachVisualChild_Private_FinalStepsOnlyIfControlIsVisible(
-                    child,
+            AttachVisualChild_Private_FinalSteps(child,
                     parent,
                     doesParentRequireToCreateAWrapperForEachChild,
                     innerDivOfWrapperForChild,
                     domElementWhereToPlaceChildStuff,
                     wrapperForChild);
-            }
-            else
+
+            if (child.Visibility == Visibility.Collapsed)
+                UIElement.INTERNAL_ApplyVisibility(child, child.Visibility);
+
+
+            if(!child.IsVisible)
             {
                 child.INTERNAL_DeferredLoadingWhenControlBecomesVisible = () =>
                 {
@@ -390,6 +391,16 @@ if(nextSibling != undefined) {
                         wrapperForChild);
                 };
             }
+            else
+            {
+                AttachVisualChild_Private_FinalStepsOnlyIfControlIsVisible(
+                    child,
+                    parent,
+                    doesParentRequireToCreateAWrapperForEachChild,
+                    innerDivOfWrapperForChild,
+                    domElementWhereToPlaceChildStuff,
+                    wrapperForChild);
+            }
         }
         static void AttachVisualChild_Private_FinalStepsOnlyIfControlIsVisible(
             UIElement child,
@@ -399,6 +410,21 @@ if(nextSibling != undefined) {
             object domElementWhereToPlaceChildStuff,
             object wrapperForChild
             )
+        {
+            //--------------------------------------------------------
+            // RECURSIVELY ATTACH THE CHILDREN, AND RENDER THE ELEMENTS BY RAISING PROPERTYCHANGED EVENT ON ALL THE DEPENDENCY PROPERTIES THAT ARE SET:
+            //--------------------------------------------------------
+
+            RenderElementsAndRaiseChangedEventOnAllDependencyProperties(child); // Note: this causes a recursion of the AttachVisualChild method because the "Children" properties of the controls get refreshed.
+            //element.INTERNAL_Render();
+        }
+
+        static void AttachVisualChild_Private_FinalSteps(UIElement child,
+            UIElement parent,
+            bool doesParentRequireToCreateAWrapperForEachChild,
+            object innerDivOfWrapperForChild,
+            object domElementWhereToPlaceChildStuff,
+            object wrapperForChild)
         {
 #if REWORKLOADED
             if (INTERNAL_VisualTreeOperation.Current.Root == null)
@@ -632,15 +658,6 @@ if(nextSibling != undefined) {
 
             // Raise the "OnAttached" event:
             child.INTERNAL_OnAttachedToVisualTree(); // IMPORTANT: Must be done BEFORE "RaiseChangedEventOnAllDependencyProperties" (for example, the ItemsControl uses this to initialize its visual)
-
-
-            //--------------------------------------------------------
-            // RECURSIVELY ATTACH THE CHILDREN, AND RENDER THE ELEMENTS BY RAISING PROPERTYCHANGED EVENT ON ALL THE DEPENDENCY PROPERTIES THAT ARE SET:
-            //--------------------------------------------------------
-
-            RenderElementsAndRaiseChangedEventOnAllDependencyProperties(child); // Note: this causes a recursion of the AttachVisualChild method because the "Children" properties of the controls get refreshed.
-            //element.INTERNAL_Render();
-
 
             //--------------------------------------------------------
             // HANDLE BINDING:

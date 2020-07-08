@@ -441,10 +441,7 @@ namespace Windows.UI.Xaml
             DependencyProperty.Register("Visibility",
                                         typeof(Visibility),
                                         typeof(UIElement),
-                                        new PropertyMetadata(Visibility.Visible, Visibility_Changed)
-                                        {
-                                            CallPropertyChangedWhenLoadedIntoVisualTree = WhenToCallPropertyChangedEnum.IfPropertyIsSet
-                                        });
+                                        new PropertyMetadata(Visibility.Visible, Visibility_Changed));
 
         string _previousValueOfDisplayCssProperty = "block";
 
@@ -452,60 +449,119 @@ namespace Windows.UI.Xaml
         {
             var uiElement = (UIElement)d;
             Visibility newValue = (Visibility)e.NewValue;
+            d.SetValue(IsVisibleProperty, newValue != Visibility.Collapsed);
+  
+            INTERNAL_ApplyVisibility(uiElement, newValue);
+        }
 
-            // Finish loading the element if it was not loaded yet because it was Collapsed (and optimization was enabled in the Settings):
+        internal static void INTERNAL_ApplyVisibility(UIElement uiElement, Visibility newValue)
+        {
+            // Set the CSS to make the DOM element visible/collapsed:
+            if (INTERNAL_VisualTreeManager.IsElementInVisualTree(uiElement))
+            {
+#if REVAMPPOINTEREVENTS
+                INTERNAL_UpdateCssPointerEvents(uiElement);
+#endif
+                // Get a reference to the most outer DOM element to show/hide:
+                dynamic mostOuterDomElement = null;
+                if (uiElement.INTERNAL_VisualParent is UIElement)
+                    mostOuterDomElement = ((UIElement)uiElement.INTERNAL_VisualParent).INTERNAL_VisualChildrenInformation[uiElement].INTERNAL_OptionalChildWrapper_OuterDomElement; // Note: this is useful for example inside a Grid, where we want to hide the whole child wrapper in order to ensure that it doesn't capture mouse clicks thus preventing users from clicking on other elements in the Grid.
+                if (mostOuterDomElement == null)
+                    mostOuterDomElement = uiElement.INTERNAL_AdditionalOutsideDivForMargins ?? uiElement.INTERNAL_OuterDomElement;
+                dynamic style = INTERNAL_HtmlDomManager.GetDomElementStyleForModification(mostOuterDomElement);
+
+                // Apply the visibility:
+                if (newValue == Visibility.Collapsed)
+                {
+                    // Remember the current value of the CSS property "display" so that we can later revert to it:
+                    string previousValueOfDisplayCssProperty = style.display;
+                    if (previousValueOfDisplayCssProperty != "none")
+                        uiElement._previousValueOfDisplayCssProperty = previousValueOfDisplayCssProperty;
+
+                    // Hide the DOM element (or its wrapper if any):
+                    style.display = "none";
+                }
+                else
+                {
+                    // Show the DOM element (or its wrapper if any) by reverting the CSS property "display" to its previous value:
+                    if (style.display == "none")
+                        style.display = uiElement._previousValueOfDisplayCssProperty;
+
+                    // The alignment was not calculated when the object was hidden, so we need to calculate it now:
+                    if (uiElement is FrameworkElement && uiElement.INTERNAL_VisualParent != null) // Note: The "INTERNAL_VisualParent" can be "null" for example if we are changing the visibility of a "PopupRoot" control.
+                    {
+                        FrameworkElement.INTERNAL_ApplyHorizontalAlignmentAndWidth((FrameworkElement)uiElement, ((FrameworkElement)uiElement).HorizontalAlignment); //todo-perfs: only call the relevant portion of the code?
+                        FrameworkElement.INTERNAL_ApplyVerticalAlignmentAndHeight((FrameworkElement)uiElement, ((FrameworkElement)uiElement).VerticalAlignment); //todo-perfs: only call the relevant portion of the code?
+                    }
+                }
+                INTERNAL_WorkaroundIE11IssuesWithScrollViewerInsideGrid.RefreshLayoutIfIE();
+
+                // Notify any listeners that the visibility has changed (this can be useful for example to redraw the Path control when it becomes visible, due to the fact that drawing on a hidden HTML canvas is not persisted):
+                INTERNAL_VisibilityChangedNotifier.NotifyListenersThatVisibilityHasChanged(uiElement);
+            }
+        }
+
+        #endregion
+
+        #region IsVisible
+
+        public bool IsVisible
+        {
+            get { return (bool)GetValue(IsVisibleProperty); }
+            set { SetValue(IsVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the IsVisible dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsVisibleProperty =
+            DependencyProperty.Register("IsVisible",
+                                        typeof(bool),
+                                        typeof(UIElement),
+                                        new PropertyMetadata(true, OnIsVisiblePropertyChanged));
+
+        private static void OnIsVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+            var uiElement = (UIElement)d;
+            bool newValue = (bool)e.NewValue;
+
             if (uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible != null
-                && newValue != Visibility.Collapsed)
+                && newValue == true)
             {
                 Action deferredLoadingWhenControlBecomesVisible = uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible;
                 uiElement.INTERNAL_DeferredLoadingWhenControlBecomesVisible = null;
                 deferredLoadingWhenControlBecomesVisible();
             }
+
+            // Invalidate the children so that they will inherit the new value.
+            InvalidateForceInheritPropertyOnChildren((UIElement)d, e.Property);
+        }
+
+        private static object CoerceIsVisibleProperty(DependencyObject d, object baseValue)
+        {
+            UIElement @this = (UIElement)d;
+
+            // We must be false if our parent is false, but we can be
+            // either true or false if our parent is true.
+            //
+            // Another way of saying this is that we can only be true
+            // if our parent is true, but we can always be false.
+            if ((bool)baseValue)
+            {
+                DependencyObject parent = @this.INTERNAL_VisualParent;
+                if (parent == null || (bool)parent.GetValue(IsVisibleProperty))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
             else
             {
-                // Set the CSS to make the DOM element visible/collapsed:
-                if (INTERNAL_VisualTreeManager.IsElementInVisualTree(uiElement))
-                {
-#if REVAMPPOINTEREVENTS
-                    INTERNAL_UpdateCssPointerEvents(uiElement);
-#endif
-                    // Get a reference to the most outer DOM element to show/hide:
-                    dynamic mostOuterDomElement = null;
-                    if (uiElement.INTERNAL_VisualParent is UIElement)
-                        mostOuterDomElement = ((UIElement)uiElement.INTERNAL_VisualParent).INTERNAL_VisualChildrenInformation[uiElement].INTERNAL_OptionalChildWrapper_OuterDomElement; // Note: this is useful for example inside a Grid, where we want to hide the whole child wrapper in order to ensure that it doesn't capture mouse clicks thus preventing users from clicking on other elements in the Grid.
-                    if (mostOuterDomElement == null)
-                        mostOuterDomElement = uiElement.INTERNAL_AdditionalOutsideDivForMargins ?? uiElement.INTERNAL_OuterDomElement;
-                    dynamic style = INTERNAL_HtmlDomManager.GetDomElementStyleForModification(mostOuterDomElement);
-
-                    // Apply the visibility:
-                    if (newValue == Visibility.Collapsed)
-                    {
-                        // Remember the current value of the CSS property "display" so that we can later revert to it:
-                        string previousValueOfDisplayCssProperty = style.display;
-                        if (previousValueOfDisplayCssProperty != "none")
-                            uiElement._previousValueOfDisplayCssProperty = previousValueOfDisplayCssProperty;
-
-                        // Hide the DOM element (or its wrapper if any):
-                        style.display = "none";
-                    }
-                    else
-                    {
-                        // Show the DOM element (or its wrapper if any) by reverting the CSS property "display" to its previous value:
-                        if (style.display == "none")
-                            style.display = uiElement._previousValueOfDisplayCssProperty;
-
-                        // The alignment was not calculated when the object was hidden, so we need to calculate it now:
-                        if (uiElement is FrameworkElement && uiElement.INTERNAL_VisualParent != null) // Note: The "INTERNAL_VisualParent" can be "null" for example if we are changing the visibility of a "PopupRoot" control.
-                        {
-                            FrameworkElement.INTERNAL_ApplyHorizontalAlignmentAndWidth((FrameworkElement)uiElement, ((FrameworkElement)uiElement).HorizontalAlignment); //todo-perfs: only call the relevant portion of the code?
-                            FrameworkElement.INTERNAL_ApplyVerticalAlignmentAndHeight((FrameworkElement)uiElement, ((FrameworkElement)uiElement).VerticalAlignment); //todo-perfs: only call the relevant portion of the code?
-                        }
-                    }
-                    INTERNAL_WorkaroundIE11IssuesWithScrollViewerInsideGrid.RefreshLayoutIfIE();
-
-                    // Notify any listeners that the visibility has changed (this can be useful for example to redraw the Path control when it becomes visible, due to the fact that drawing on a hidden HTML canvas is not persisted):
-                    INTERNAL_VisibilityChangedNotifier.NotifyListenersThatVisibilityHasChanged(uiElement);
-                }
+                return false;
             }
         }
 
@@ -1227,6 +1283,11 @@ namespace Windows.UI.Xaml
             if (!(bool)parent.GetValue(IsHitTestVisibleProperty))
             {
                 uiE.CoerceValue(IsHitTestVisibleProperty);
+            }
+
+            if (!(bool)parent.GetValue(IsVisibleProperty))
+            {
+                uiE.CoerceValue(IsVisibleProperty);
             }
         }
 
