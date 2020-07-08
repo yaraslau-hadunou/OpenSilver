@@ -518,7 +518,7 @@ namespace Windows.UI.Xaml
             DependencyProperty.Register("IsVisible",
                                         typeof(bool),
                                         typeof(UIElement),
-                                        new PropertyMetadata(true, OnIsVisiblePropertyChanged));
+                                        new PropertyMetadata(true, OnIsVisiblePropertyChanged, CoerceIsVisibleProperty));
 
         private static void OnIsVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
