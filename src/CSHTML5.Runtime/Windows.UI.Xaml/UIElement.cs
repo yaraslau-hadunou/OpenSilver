@@ -460,11 +460,11 @@ namespace Windows.UI.Xaml
                 deferredLoadingWhenControlBecomesVisible();
             }
 
-            // Update the "IsVisible" property (which is inherited using the "coerce" method):
-            d.SetValue(IsVisibleProperty, newValue != Visibility.Collapsed);
-            
             // Make the CSS changes required to apply the visibility at the DOM level:
             INTERNAL_ApplyVisibility(uiElement, newValue);
+
+            // Update the "IsVisible" property (which is inherited using the "coerce" method):
+            d.SetValue(IsVisibleProperty, newValue != Visibility.Collapsed);
         }
 
         internal static void INTERNAL_ApplyVisibility(UIElement uiElement, Visibility newValue)
@@ -547,6 +547,11 @@ namespace Windows.UI.Xaml
 
             // Invalidate the children so that they will inherit the new value.
             InvalidateForceInheritPropertyOnChildren((UIElement)d, e.Property);
+
+            if (uiElement.IsVisibleChanged != null)
+            {    
+                uiElement.IsVisibleChanged(d, e);
+            }
         }
 
         private static object CoerceIsVisibleProperty(DependencyObject d, object baseValue)
@@ -578,6 +583,8 @@ namespace Windows.UI.Xaml
                 return false;
             }
         }
+
+        public event DependencyPropertyChangedEventHandler IsVisibleChanged;
 
         #endregion
 
