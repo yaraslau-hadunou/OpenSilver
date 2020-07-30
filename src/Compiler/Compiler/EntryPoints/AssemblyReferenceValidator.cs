@@ -23,6 +23,10 @@ namespace DotNetForHtml5.Compiler
         [Required]
         public bool IsBridgeBasedVersion { get; set; }
 
+#if BRIDGE && !CSHTML5BLAZOR
+        public bool IsSimulatorOnly { get; set; }
+#endif
+
 #if BRIDGE
         [Required]
 #endif
@@ -49,8 +53,12 @@ namespace DotNetForHtml5.Compiler
             string operationName = "C#/XAML for HTML5: AssemblyReferenceValidator";
             try
             {
+#if BRIDGE && !CSHTML5BLAZOR
+                return CheckingThatAssembliesCanBeReferenced.Check(References, AllowedAssemblies, ActivationAppPath, Flags, logger, IsBridgeBasedVersion, NameOfAssembliesThatDoNotContainUserCode, ProjectDir, ReferencesPaths, TypeForwardingAssemblyPath, IsSimulatorOnly);
+#else
                 return CheckingThatAssembliesCanBeReferenced.Check(References, AllowedAssemblies, ActivationAppPath, Flags, logger, IsBridgeBasedVersion, NameOfAssembliesThatDoNotContainUserCode, ProjectDir, ReferencesPaths, TypeForwardingAssemblyPath);
-            }
+#endif
+                }
             catch (CompilationExceptionWithOptions ex)
             {
                 if (ex.DisplayOnlyTheMessageInTheOutputNothingElse)

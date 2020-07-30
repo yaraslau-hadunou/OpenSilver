@@ -4,47 +4,72 @@ for /F %%a in ('"prompt $E$S & echo on & for %%b in (1) do rem"') do set "ESC=%%
 
 set /p PackageVersion="%ESC%[92mCSHTML5 version:%ESC%[0m 2.0.0-alpha"
 
-echo. 
+echo.
 echo %ESC%[95mRestoring NuGet packages%ESC%[0m
-echo. 
+echo.
 nuget restore ../src/CSHTML5.sln
 nuget restore ../src/VSExtension/VSExtension.CSHTML5.sln -MSBuildVersion 14
 
-echo. 
+echo.
 echo %ESC%[95mBuilding %ESC%[0mMigration %ESC%[95mconfiguration%ESC%[0m
-echo. 
+echo.
 msbuild ../src/CSHTML5.sln -p:Configuration=Migration
-echo. 
+echo.
+IF NOT EXIST "..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator" mkdir ..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator\CSHTML5.Simulator.dll
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator\CSHTML5.Simulator.pdb
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator\CSHTML5.xml
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator\DotNetBrowser.Chromium.dll
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator\DotNetBrowser.dll
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator\DotNetBrowser.xml
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration\Debug.Simulator\System.dll
+echo.
 echo %ESC%[95mPacking %ESC%[0mCSHTML5.Migration %ESC%[95mNuGet package%ESC%[0m
-echo. 
+echo.
 nuget.exe pack data\CSHTML5.nuspec -OutputDirectory "output/CSHTML5" -Properties "PackageId=CSHTML5.Migration;PackageVersion=2.0.0-alpha%PackageVersion%;Configuration=Migration;AssembliesPrefix=CSHTML5.Migration;CompilerPrefix=SLMigration.CSharpXamlForHtml5"
 
-echo. 
+echo.
 echo %ESC%[95mBuilding %ESC%[0mMigration.WorkInProgress %ESC%[95mconfiguration%ESC%[0m
-echo. 
+echo.
 msbuild ../src/CSHTML5.sln -p:Configuration=Migration.WorkInProgress
-echo. 
+echo.
+IF NOT EXIST "..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator" mkdir ..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator\CSHTML5.Simulator.dll
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator\CSHTML5.Simulator.pdb
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator\CSHTML5.xml
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator\DotNetBrowser.Chromium.dll
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator\DotNetBrowser.dll
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator\DotNetBrowser.xml
+echo. 2>..\src\Runtime\Runtime\bin\CSHTML5\Migration.WorkInProgress\Debug.Simulator\System.dll
+echo.
 echo %ESC%[95mPacking %ESC%[0mCSHTML5.Migration.WorkInProgress %ESC%[95mNuGet package%ESC%[0m
-echo. 
+echo.
 nuget.exe pack data\CSHTML5.nuspec -OutputDirectory "output/CSHTML5" -Properties "PackageId=CSHTML5.Migration.WorkInProgress;PackageVersion=2.0.0-alpha%PackageVersion%;Configuration=Migration.WorkInProgress;AssembliesPrefix=CSHTML5.Migration;CompilerPrefix=SLMigration.CSharpXamlForHtml5"
 
-echo. 
+echo.
 echo %ESC%[95mBuilding %ESC%[0mDebug %ESC%[95mconfiguration%ESC%[0m
-echo. 
+echo.
 msbuild ../src/CSHTML5.sln -p:Configuration=Debug
-echo. 
+echo.
+echo %ESC%[95mBuilding %ESC%[0mDebug.Simulator %ESC%[95mconfiguration%ESC%[0m
+echo.
+msbuild ../src/CSHTML5.sln -p:Configuration=Debug.Simulator
+echo.
 echo %ESC%[95mPacking %ESC%[0mCSHTML5 %ESC%[95mNuGet package%ESC%[0m
-echo. 
+echo.
 nuget.exe pack data\CSHTML5.nuspec -OutputDirectory "output/CSHTML5" -Properties "PackageId=CSHTML5;PackageVersion=2.0.0-alpha%PackageVersion%;Configuration=Debug;AssembliesPrefix=CSHTML5;CompilerPrefix=CSharpXamlForHtml5"
 
-echo. 
+
+echo.
 echo %ESC%[95mBuilding %ESC%[0mVSIX %ESC%[0m
-echo. 
+echo.
 msbuild ../src/VSExtension/VSExtension.CSHTML5.sln -p:Configuration=Release -p:VisualStudioVersion=14.0
-echo. 
+echo.
 echo %ESC%[95mCopying %ESC%[0mCSHTML5.vsix %ESC%[95mto output folder%ESC%[0m
-echo. 
+echo.
 xcopy ..\src\VSExtension\CSHTML5.Vsix\bin\CSHTML5\Release\CSHTML5.vsix output\CSHTML5\ /Y
+
+
 
 pause
 

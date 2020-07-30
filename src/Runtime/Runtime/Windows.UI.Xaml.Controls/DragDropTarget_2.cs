@@ -26,7 +26,7 @@ using System.Windows.Media;
 using Microsoft.Windows;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-using MS = Microsoft.Windows;
+using MSW = Microsoft.Windows;
 #else
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
@@ -36,7 +36,7 @@ using System.Windows.Controls;
 using System;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Controls;
-using MS = System.Windows;
+using MSW = System.Windows;
 #endif
 
 #if MIGRATION
@@ -276,7 +276,7 @@ namespace Windows.UI.Xaml.Controls
             SelectionCollection selectionCollection = SelectionCollection.ToSelectionCollection(selection);
             DataObject dataObject = new DataObject();
             dataObject.SetData("ItemDragEventArgs", new ItemDragEventArgs(selectionCollection));
-            MS.DragEventArgs dragOverEventArgs = new MS.DragEventArgs(dataObject);
+            MSW.DragEventArgs dragOverEventArgs = new MSW.DragEventArgs(dataObject);
 
             // Get the DragDropTarget element that is under the pointer, if any:
             TItemContainerType targetItemContainer;
@@ -292,7 +292,7 @@ namespace Windows.UI.Xaml.Controls
                 // Raise the DragLeave event of the element that was under the pointer before:
                 if (_previousdragDropTargetUnderPointer != null && _previousdragDropTargetUnderPointer.DragLeave != null)
                 {
-                    _previousdragDropTargetUnderPointer.DragLeave(_previousdragDropTargetUnderPointer, new MS.DragEventArgs(dataObject));
+                    _previousdragDropTargetUnderPointer.DragLeave(_previousdragDropTargetUnderPointer, new MSW.DragEventArgs(dataObject));
 
                     // Reset the value of "_isDragCancelled" when leaving a control. This variable lets the user prevent a Drop on an element when the user sets e.Handled=true in the "DragOver" event of that element.
                     _isDragCancelled = false;
@@ -302,7 +302,7 @@ namespace Windows.UI.Xaml.Controls
 
                 // Raise the DragEnter event of the new element that is under the pointer:
                 if (dragDropTargetUnderPointer != null && dragDropTargetUnderPointer.DragEnter != null)
-                    dragDropTargetUnderPointer.DragEnter(dragDropTargetUnderPointer, new MS.DragEventArgs(dataObject));
+                    dragDropTargetUnderPointer.DragEnter(dragDropTargetUnderPointer, new MSW.DragEventArgs(dataObject));
             }
 
             if (dragDropTargetUnderPointer != null)
@@ -426,7 +426,7 @@ namespace Windows.UI.Xaml.Controls
                             dataObject.SetData("ItemDragEventArgs", new ItemDragEventArgs(selectionCollection));
 
 #if !(BRIDGE && MIGRATION)
-                            dragDropTargetUnderPointer.ItemDroppedOnSource(dragDropTargetUnderPointer, new MS.DragEventArgs(dataObject, e));
+                            dragDropTargetUnderPointer.ItemDroppedOnSource(dragDropTargetUnderPointer, new MSW.DragEventArgs(dataObject, e));
 #endif
                         }
                     }
@@ -449,7 +449,7 @@ namespace Windows.UI.Xaml.Controls
 
                             // Raise the Drop event:
 #if !(BRIDGE && MIGRATION)
-                            dragDropTargetUnderPointer.Drop(dragDropTargetUnderPointer, new MS.DragEventArgs(dataObject, e));
+                            dragDropTargetUnderPointer.Drop(dragDropTargetUnderPointer, new MSW.DragEventArgs(dataObject, e));
 #endif
                         }
 
@@ -514,7 +514,7 @@ namespace Windows.UI.Xaml.Controls
         /// Raises the DragOver event.
         /// </summary>
         /// <param name="dragOverEventArgs">Information about the event.</param>
-        protected virtual void OnDragOver(MS.DragEventArgs dragOverEventArgs)
+        protected virtual void OnDragOver(MSW.DragEventArgs dragOverEventArgs)
         {
             if (this.DragOver != null)
             {
@@ -607,23 +607,23 @@ namespace Windows.UI.Xaml.Controls
         /// <summary>
         /// Raises the DragEnter event.
         /// </summary>
-        public event MS.DragEventHandler DragEnter;
+        public event MSW.DragEventHandler DragEnter;
         /// <summary>
         /// Raises the DragLeave event.
         /// </summary>
-        public event MS.DragEventHandler DragLeave;
+        public event MSW.DragEventHandler DragLeave;
         /// <summary>
         /// Raises the DragOver event.
         /// </summary>
-        public event MS.DragEventHandler DragOver;
+        public event MSW.DragEventHandler DragOver;
         /// <summary>
         /// Raises the Drop event
         /// </summary>
-        public event MS.DragEventHandler Drop;
+        public event MSW.DragEventHandler Drop;
         /// <summary>
         /// Raises the ItemDroppedOnSource event
         /// </summary>
-        public event MS.DragEventHandler ItemDroppedOnSource;
+        public event MSW.DragEventHandler ItemDroppedOnSource;
 
 #endregion
 

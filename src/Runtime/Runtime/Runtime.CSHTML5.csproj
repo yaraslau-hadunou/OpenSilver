@@ -13,7 +13,7 @@
     <ErrorReport>prompt</ErrorReport>
     <FileAlignment>512</FileAlignment>
     <DebugSymbols>true</DebugSymbols>
-    <NoStdLib>true</NoStdLib>
+    <NoStdLib Condition="'$(Configuration)|$(Platform)' != 'Debug.Simulator|AnyCPU'">true</NoStdLib>
     <NoWarn>1591</NoWarn>
     <IsCSharpXamlForHtml5>true</IsCSharpXamlForHtml5>
     <CSharpXamlForHtml5OutputType>Library</CSharpXamlForHtml5OutputType>
@@ -49,6 +49,44 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>$(BinFolder)\Migration.WorkInProgress\CSHTML5.Migration.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug.Simulator|AnyCPU'">
+    <AssemblyName>CSHTML5.Simulator</AssemblyName>
+    <DefineConstants>TRACE;DEBUG;BRIDGE;DISABLE_JS_OUTPUT</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>$(BinFolder)\Debug\Debug.Simulator\CSHTML5.xml</DocumentationFile>
+    <OutputPath>$(BinFolder)\Debug\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug.Simulator|AnyCPU'">
+    <Compile Include="TypeForwarding\Bridge\ExternalAttribute.cs" />
+    <Compile Include="TypeForwarding\Bridge\IBridgeClass.cs" />
+    <Compile Include="TypeForwarding\Bridge\Script.cs" />
+    <Compile Include="TypeForwarding\Bridge\ScriptAttribute.cs" />
+    <Compile Include="TypeForwarding\Bridge\TemplateAttribute.cs" />
+    <Compile Include="TypeForwarding\ReimplementedToMatchBridgeSignature\ArrayExtensions.cs" />
+    <Compile Include="TypeForwarding\ReimplementedToMatchBridgeSignature\Grouping.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)' != 'Debug.Simulator|AnyCPU'">
+    <Compile Include="System.Resources\ResourceManager.cs" />
+    <Compile Include="ToBeReviewed\ObservableCollection.cs" />
+    <Compile Include="System.ComponentModel\CancelEventArgs.cs" />
+    <Compile Include="System.CodeDom.Compiler\GeneratedCodeAttribute.cs" />
+    <Compile Include="System.Collections.Specialized\INotifyCollectionChanged.cs" />
+    <Compile Include="System.Collections.Specialized\NotifyCollectionChangedAction.cs" />
+    <Compile Include="System.Collections.Specialized\NotifyCollectionChangedEventArgs.cs" />
+    <Compile Include="System.Collections.Specialized\NotifyCollectionChangedEventHandler.cs" />
+    <Compile Include="System.Net\HttpRequestHeader.cs" />
+    <Compile Include="System.Net\HttpStatusCode.cs" />
+    <Compile Include="System.Net\HttpWebResponse.cs" />
+    <Compile Include="System.Net\UploadStringCompletedEventArgs.cs" />
+    <Compile Include="System.Net\UploadStringCompletedEventHandler.cs" />
+    <Compile Include="System.Net\WebClient.cs" />
+    <Compile Include="System.Net\WebRequest.cs" />
+    <Compile Include="System.Net\WebResponse.cs" />
+    <Compile Include="System.Net\WebHeaderCollection.cs" />
+    <Compile Include="System.Net\WebException.cs" />
+    <Compile Include="System.Net\WebExceptionStatus.cs" />
+    <Compile Include="System.Windows.input\ICommand.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Main\INTERNAL_NamedObject.cs" />
     <Compile Include="Core\Other\INTERNAL_DispatcherQueueHandler.cs" />
@@ -72,7 +110,9 @@
     <Compile Include="System.Net\ServicePointManager.cs" />
     <Compile Include="System.Net\WORKINPROGRESS\HttpWebRequest.cs" />
     <Compile Include="System.Net\WORKINPROGRESS\WebRequest.cs" />
-    <Compile Include="System.Resources\ResourceManager.cs" />
+    <Compile Include="System.Net\WebClientWithCredentials.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="System.ServiceModel\CommunicationException.cs" />
     <Compile Include="System.Windows.Browser\WORKINPROGRESS\BrowserInformation.cs" />
     <Compile Include="System.Windows.Browser\WORKINPROGRESS\HtmlEventArgs.cs" />
@@ -136,7 +176,6 @@
     <Compile Include="ToBeReviewed\IFormatter.cs" />
     <Compile Include="ToBeReviewed\INTERNAL_BridgeWorkarounds.cs" />
     <Compile Include="ToBeReviewed\NumberStyles.cs" />
-    <Compile Include="ToBeReviewed\ObservableCollection.cs" />
     <Compile Include="ToBeReviewed\SendOrPostCallback.cs" />
     <Compile Include="ToBeReviewed\SerializationBinder.cs" />
     <Compile Include="ToBeReviewed\SerializationInfo.cs" />
@@ -227,13 +266,7 @@
     <Compile Include="Core\Rendering\INTERNAL_VisualChildInformation.cs" />
     <Compile Include="Core\Rendering\INTERNAL_VisualTreeManager.cs" />
     <Compile Include="Core\Other\SilverlightAndWpfNamespaces.cs" />
-    <Compile Include="System.CodeDom.Compiler\GeneratedCodeAttribute.cs" />
-    <Compile Include="System.Collections.Specialized\INotifyCollectionChanged.cs" />
-    <Compile Include="System.Collections.Specialized\NotifyCollectionChangedAction.cs" />
-    <Compile Include="System.Collections.Specialized\NotifyCollectionChangedEventArgs.cs" />
-    <Compile Include="System.Collections.Specialized\NotifyCollectionChangedEventHandler.cs" />
     <Compile Include="System.ComponentModel\AsyncCompletedEventArgs.cs" />
-    <Compile Include="System.ComponentModel\CancelEventArgs.cs" />
     <Compile Include="System.ComponentModel\ClosingEventArgs.cs" />
     <Compile Include="System.ComponentModel\DesignerProperties.cs" />
     <Compile Include="System.IO.IsolatedStorage\IsolatedStorageFile.cs" />
@@ -243,25 +276,13 @@
     <Compile Include="System.Net\CredentialsMode.cs" />
     <Compile Include="System.Net\DownloadStringCompletedEventArgs.cs" />
     <Compile Include="System.Net\DownloadStringCompletedEventHandler.cs" />
-    <Compile Include="System.Net\HttpRequestHeader.cs" />
     <Compile Include="System.Net\HttpResponseHeader.cs" />
-    <Compile Include="System.Net\HttpStatusCode.cs" />
     <Compile Include="System.Net\HttpWebRequest.cs" />
-    <Compile Include="System.Net\HttpWebResponse.cs" />
     <Compile Include="System.Net\OpenReadCompletedEventArgs.cs" />
     <Compile Include="System.Net\OpenReadCompletedEventHandler.cs" />
     <Compile Include="System.Net\OpenWriteCompletedEventArgs.cs" />
     <Compile Include="System.Net\OpenWriteCompletedEventHandler.cs" />
     <Compile Include="System.Net\ProtectionLevel.cs" />
-    <Compile Include="System.Net\UploadStringCompletedEventArgs.cs" />
-    <Compile Include="System.Net\UploadStringCompletedEventHandler.cs" />
-    <Compile Include="System.Net\WebClient.cs" />
-    <Compile Include="System.Net\WebClientWithCredentials.cs" />
-    <Compile Include="System.Net\WebException.cs" />
-    <Compile Include="System.Net\WebExceptionStatus.cs" />
-    <Compile Include="System.Net\WebHeaderCollection.cs" />
-    <Compile Include="System.Net\WebRequest.cs" />
-    <Compile Include="System.Net\WebResponse.cs" />
     <Compile Include="System.Runtime.Serialization\CollectionDataContract2Attribute.cs" />
     <Compile Include="System.Runtime.Serialization\DataContract2Attribute.cs" />
     <Compile Include="System.Runtime.Serialization\DataContractSerializer.cs" />
@@ -352,7 +373,6 @@
     <Compile Include="System.Windows.input\Cursor.cs" />
     <Compile Include="System.Windows.input\CursorConverter.cs" />
     <Compile Include="System.Windows.input\Cursors.cs" />
-    <Compile Include="System.Windows.input\ICommand.cs" />
     <Compile Include="System.Windows.input\Keyboard.cs" />
     <Compile Include="System.Windows.input\MouseButtonEventArgs.cs" />
     <Compile Include="System.Windows.Interactivity\AttachableCollection_1.cs" />
@@ -881,21 +901,21 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Reference Include="Bridge, Version=17.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CSHTML5.2.0.0-alpha69-089\lib\net40\Bridge.dll</HintPath>
+      <HintPath>..\..\packages\CSHTML5.2.0.0-alpha70-091\lib\net40\Bridge.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CSHTML5.Stubs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CSHTML5.2.0.0-alpha69-089\lib\net40\CSHTML5.Stubs.dll</HintPath>
+      <HintPath>..\..\packages\CSHTML5.2.0.0-alpha70-091\lib\net40\CSHTML5.Stubs.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug.WorkInProgress|AnyCPU' ">
     <Reference Include="Bridge, Version=17.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CSHTML5.2.0.0-alpha69-089\lib\net40\Bridge.dll</HintPath>
+      <HintPath>..\..\packages\CSHTML5.2.0.0-alpha70-091\lib\net40\Bridge.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CSHTML5.Stubs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CSHTML5.2.0.0-alpha69-089\lib\net40\CSHTML5.Stubs.dll</HintPath>
+      <HintPath>..\..\packages\CSHTML5.2.0.0-alpha70-091\lib\net40\CSHTML5.Stubs.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -1023,8 +1043,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Content>
   </ItemGroup>
-  <Import Project="..\..\packages\CSHTML5.2.0.0-alpha69-089\build\CSHTML5.targets" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
-  <Import Project="..\..\packages\CSHTML5.2.0.0-alpha69-089\build\CSHTML5.targets" Condition=" '$(Configuration)|$(Platform)' == 'Debug.WorkInProgress|AnyCPU' " />
+  <ItemGroup>
+    <Folder Include="TypeScriptDefinitionsSupportFiles\DotNetBrowser\" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="..\..\packages\CSHTML5.2.0.0-alpha70-091\build\CSHTML5.targets" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <Import Project="..\..\packages\CSHTML5.2.0.0-alpha70-091\build\CSHTML5.targets" Condition=" '$(Configuration)|$(Platform)' == 'Debug.WorkInProgress|AnyCPU' " />
   <Import Project="..\..\packages\CSHTML5.Migration.2.0.0-alpha69-089\build\CSHTML5.Migration.targets" Condition=" '$(Configuration)|$(Platform)' == 'Migration|AnyCPU' " />
+  <Import Project="..\..\packages\CSHTML5.2.0.0-alpha70-091\build\CSHTML5.targets" Condition=" '$(Configuration)|$(Platform)' == 'Debug.Simulator|AnyCPU' " />
   <Import Project="..\..\packages\CSHTML5.Migration.WorkInProgress.2.0.0-alpha69-089\build\CSHTML5.Migration.WorkInProgress.targets" Condition=" '$(Configuration)|$(Platform)' == 'Migration.WorkInProgress|AnyCPU' " />
 </Project>

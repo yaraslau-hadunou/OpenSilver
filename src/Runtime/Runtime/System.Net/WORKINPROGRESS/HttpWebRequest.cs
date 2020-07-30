@@ -90,7 +90,11 @@ namespace System.Net
             }
 
             //string xmlReturnedFromTheServer = castedAsyncResult.XmlReturnedFromTheServer;
+#if DISABLE_JS_OUTPUT
+            HttpWebResponse response = null;
+#else
             HttpWebResponse response = new HttpWebResponse(this._webRequestHelper.GetXmlHttpRequest());
+#endif
             return response;
         }
         #endregion

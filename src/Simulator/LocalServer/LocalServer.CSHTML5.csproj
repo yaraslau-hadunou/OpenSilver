@@ -47,6 +47,12 @@
   <PropertyGroup>
     <ApplicationManifest>CSharpXamlForHtml5.LocalServer.exe.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug.Simulator|AnyCPU'">
+    <AssemblyName>CSHTML5.Simulator</AssemblyName>
+    <DefineConstants>TRACE;DEBUG;DISABLE_JS_OUTPUT</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.IISVersionManagerLibrary">
       <HintPath>..\..\..\ExtLibs\IIS\Interop.IISVersionManagerLibrary.dll</HintPath>

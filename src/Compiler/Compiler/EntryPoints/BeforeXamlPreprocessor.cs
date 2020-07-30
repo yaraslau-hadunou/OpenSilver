@@ -43,6 +43,10 @@ namespace DotNetForHtml5.Compiler
 #endif
         public string TypeForwardingAssemblyPath { get; set; }
 
+#if BRIDGE && !CSHTML5BLAZOR
+        public bool IsSimulatorOnly { get; set; }
+#endif
+
 #if CSHTML5BLAZOR
         // the assemblies are setted by the AssemblyReferenceValidator
         public Microsoft.Build.Framework.ITaskItem[] ResolvedReferences { get; set; }
@@ -53,14 +57,14 @@ namespace DotNetForHtml5.Compiler
 #if CSHTML5BLAZOR
             return Execute(IsSecondPass, Flags, ResolvedReferences, SourceAssemblyForPass2, NameOfAssembliesThatDoNotContainUserCode, IsBridgeBasedVersion, IsProcessingCSHTML5Itself, new LoggerThatUsesTaskOutput(this), TypeForwardingAssemblyPath);
 #else
-            return Execute(IsSecondPass, Flags, ReferencesPaths, SourceAssemblyForPass2, NameOfAssembliesThatDoNotContainUserCode, IsBridgeBasedVersion, IsProcessingCSHTML5Itself, new LoggerThatUsesTaskOutput(this), TypeForwardingAssemblyPath);
+            return Execute(IsSecondPass, Flags, ReferencesPaths, SourceAssemblyForPass2, NameOfAssembliesThatDoNotContainUserCode, IsBridgeBasedVersion, IsProcessingCSHTML5Itself, new LoggerThatUsesTaskOutput(this), TypeForwardingAssemblyPath, IsSimulatorOnly);
 #endif
         }
 
 #if CSHTML5BLAZOR
         public static bool Execute(bool isSecondPass, string flagsString, ITaskItem[] resolvedReferences, string sourceAssemblyForPass2, string nameOfAssembliesThatDoNotContainUserCode, bool isBridgeBasedVersion, bool isProcessingCSHTML5Itself, ILogger logger, string typeForwardingAssemblyPath)
 #else
-        public static bool Execute(bool isSecondPass, string flagsString, string referencePathsString, string sourceAssemblyForPass2, string nameOfAssembliesThatDoNotContainUserCode, bool isBridgeBasedVersion, bool isProcessingCSHTML5Itself, ILogger logger, string typeForwardingAssemblyPath)
+        public static bool Execute(bool isSecondPass, string flagsString, string referencePathsString, string sourceAssemblyForPass2, string nameOfAssembliesThatDoNotContainUserCode, bool isBridgeBasedVersion, bool isProcessingCSHTML5Itself, ILogger logger, string typeForwardingAssemblyPath, bool isSimulatorOnly = false)
 #endif
 
         {
@@ -106,8 +110,11 @@ namespace DotNetForHtml5.Compiler
                     HashSet<string> referencePaths = (referencePathsString != null) ? new HashSet<string>(referencePathsString.Split(';')) : new HashSet<string>();
 
                     referencePaths.RemoveWhere(s => !s.ToLower().EndsWith(".dll") || s.Contains("DotNetBrowser") || s.ToLower().EndsWith(@"\bridge.dll"));
-
+#if BRIDGE && !CSHTML5BLAZOR
+                    foreach (string referencedAssembly in AssembliesLoadHelper.EnsureCoreAssemblyIsFirstInList(referencePaths, isSimulatorOnly)) // Note: we ensure that the Core assembly is loaded first so that types such as "XmlnsDefinitionAttribute" are known when loading the other assemblies.
+#else
                     foreach (string referencedAssembly in AssembliesLoadHelper.EnsureCoreAssemblyIsFirstInList(referencePaths)) // Note: we ensure that the Core assembly is loaded first so that types such as "XmlnsDefinitionAttribute" are known when loading the other assemblies.
+#endif
                     {
                         reflectionOnSeparateAppDomain.LoadAssembly(referencedAssembly, loadReferencedAssembliesToo: false, isBridgeBasedVersion: isBridgeBasedVersion, isCoreAssembly: false, nameOfAssembliesThatDoNotContainUserCode: nameOfAssembliesThatDoNotContainUserCode);
                     }

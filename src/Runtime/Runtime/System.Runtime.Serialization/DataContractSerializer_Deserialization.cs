@@ -251,7 +251,7 @@ namespace System.Runtime.Serialization
                 try
                 {
                     //todo: check if the type inherits from Dictionary here and if so, we do nothing here and it will be handled later.
-#if !BRIDGE
+#if !BRIDGE || DISABLE_JS_OUTPUT
                     object result1 = Activator.CreateInstance(resultType, args: new object[] { list });
 #else
                     object result1 = Activator.CreateInstance(resultType, arguments: new object[] { list });

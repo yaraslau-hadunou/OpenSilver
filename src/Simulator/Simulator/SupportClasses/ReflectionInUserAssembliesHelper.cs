@@ -145,7 +145,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
                      || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION
                      || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE
                      || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR
-                     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR)
+                     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR
+                     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE_Simulator)
                      select a).FirstOrDefault();
                 if (coreAssembly != null)
                 {

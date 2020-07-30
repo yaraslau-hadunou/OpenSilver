@@ -21,6 +21,13 @@
     <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/$AssembliesPrefix$.xml" target="lib/net40/$AssembliesPrefix$.xml" />
     <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/$AssembliesPrefix$.pdb" target="lib/net40/$AssembliesPrefix$.pdb" />
     <file src="../../src/Runtime/Bridge.TypesThatWillBeForwarded/bin/CSHTML5/$Configuration$/CSHTML5.Stubs.dll" target="lib/net40/CSHTML5.Stubs.dll" />
+    <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/Debug.Simulator/CSHTML5.Simulator.dll" target="lib/Simulator/Debug.Simulator/CSHTML5.Simulator.dll"/>
+    <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/Debug.Simulator/CSHTML5.Simulator.pdb" target="lib/Simulator/Debug.Simulator/CSHTML5.Simulator.pdb"/>
+    <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/Debug.Simulator/CSHTML5.xml" target="lib/Simulator/Debug.Simulator/CSHTML5.xml"/>
+    <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/Debug.Simulator/DotNetBrowser.Chromium.dll" target="lib/Simulator/Debug.Simulator/DotNetBrowser.Chromium.dll"/>
+    <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/Debug.Simulator/DotNetBrowser.dll" target="lib/Simulator/Debug.Simulator/DotNetBrowser.dll"/>
+    <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/Debug.Simulator/DotNetBrowser.xml" target="lib/Simulator/Debug.Simulator/DotNetBrowser.xml"/>
+    <file src="../../src/Runtime/Runtime/bin/CSHTML5/$Configuration$/Debug.Simulator/System.dll" target="lib/Simulator/Debug.Simulator/System.dll"/>
 
     <!-- CSHTML5 targets -->
     <file src="../../src/Targets/CSHTML5.targets" target="build/$PackageId$.targets" /> <!-- Note: the main targets file must have the same name as the package in order to be automatically imported into the end-user project. -->
@@ -62,7 +69,7 @@
 
     <!-- CSHTML5 install script -->
     <file src="install.ps1" target="tools/install.ps1" />
-    
+
     <!-- ("Bridge" package) content -->
     <file src="../../ExtLibs/BridgeNET/Bridge/content/bridge.json" target="content/bridge.json" />
 

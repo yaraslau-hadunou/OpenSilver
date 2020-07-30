@@ -14,10 +14,10 @@ namespace DotNetForHtml5.Compiler
         /// </summary>
         /// <param name="assemblyPaths">An enumerable that contains the paths of some assemblies</param>
         /// <returns>An enumerable that contains the same items as the original enumerable but in a different order</returns>
-        internal static IEnumerable<string> EnsureCoreAssemblyIsFirstInList(IEnumerable<string> assemblyPaths)
+        internal static IEnumerable<string> EnsureCoreAssemblyIsFirstInList(IEnumerable<string> assemblyPaths, bool isSimulatorOnly = false)
         {
             List<string> result = new List<string>();
-            string coreAssemblyNameLowercase = GetCoreAssemblyName().ToLower();
+            string coreAssemblyNameLowercase = GetCoreAssemblyName(isSimulatorOnly).ToLower();
             foreach (string assemblyPath in assemblyPaths)
             {
                 string fileName = Path.GetFileNameWithoutExtension(assemblyPath);
@@ -33,7 +33,7 @@ namespace DotNetForHtml5.Compiler
             return result;
         }
 
-        internal static string GetCoreAssemblyName()
+        internal static string GetCoreAssemblyName(bool isSimulatorOnly)
         {
 #if SILVERLIGHTCOMPATIBLEVERSION
 #if CSHTML5BLAZOR
@@ -47,7 +47,10 @@ namespace DotNetForHtml5.Compiler
 #if CSHTML5BLAZOR
             return Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR;
 #elif BRIDGE
-            return Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE;
+            if (isSimulatorOnly)
+                return Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE_Simulator;
+            else
+                return Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE;
 #else
             return Constants.NAME_OF_CORE_ASSEMBLY;
 #endif

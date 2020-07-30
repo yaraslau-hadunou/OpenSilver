@@ -539,7 +539,7 @@ namespace Windows.UI.Xaml.Controls
         /// <returns><c>true</c> if the value was decremented by exactly <c>Increment</c>; <c>false</c> if it was constrained.</returns>
         protected bool DoDecrement()
         {
-#if !BRIDGE
+#if !BRIDGE || DISABLE_JS_OUTPUT
             return this.SetValueAndUpdateValidDirections(Math.Round(value: this.Value - this.Increment, digits: 5));
 #else
             return this.SetValueAndUpdateValidDirections(Math.Round(d: this.Value - this.Increment, digits: 5));
@@ -548,7 +548,7 @@ namespace Windows.UI.Xaml.Controls
 
         protected bool DoIncrement()
         {
-#if !BRIDGE
+#if !BRIDGE ||DISABLE_JS_OUTPUT
             return this.SetValueAndUpdateValidDirections(Math.Round(value: this.Value + this.Increment, digits: 5));
 #else
             return this.SetValueAndUpdateValidDirections(Math.Round(d: this.Value + this.Increment, digits: 5));

@@ -17,7 +17,7 @@ namespace DotNetForHtml5.Compiler
 #endif
         }
 
-        public static bool Check(Microsoft.Build.Framework.ITaskItem[] references, string allowedReferencesAsString, string activationAppPath, string flagsString, ILogger logger, bool isBridgeBasedVersion, string nameOfAssembliesThatDoNotContainUserCode, string projectDir, string referencesPaths, string typeForwardingAssemblyPath)
+        public static bool Check(Microsoft.Build.Framework.ITaskItem[] references, string allowedReferencesAsString, string activationAppPath, string flagsString, ILogger logger, bool isBridgeBasedVersion, string nameOfAssembliesThatDoNotContainUserCode, string projectDir, string referencesPaths, string typeForwardingAssemblyPath, bool isSimulatorOnly = false)
         {
             List<string> referencesThatAreOK = new List<string>();
             List<string> referencesThatAreNotCompatible = new List<string>();
@@ -36,7 +36,7 @@ namespace DotNetForHtml5.Compiler
 
                 ResultEnum result;
                 string minimumRequiredCompilerVersionFriendlyNameIfAny;
-                IsReferenceAcceptable(referencedName, referencedHintPathIfAny, allowedReferencesAsString, flags, isBridgeBasedVersion, nameOfAssembliesThatDoNotContainUserCode, projectDir, referencesPaths, typeForwardingAssemblyPath, out result, out minimumRequiredCompilerVersionFriendlyNameIfAny);
+                IsReferenceAcceptable(referencedName, referencedHintPathIfAny, allowedReferencesAsString, flags, isBridgeBasedVersion, nameOfAssembliesThatDoNotContainUserCode, projectDir, referencesPaths, typeForwardingAssemblyPath, out result, out minimumRequiredCompilerVersionFriendlyNameIfAny, isSimulatorOnly);
                 switch (result)
                 {
                     case ResultEnum.ReferenceIsOK:
@@ -120,7 +120,7 @@ namespace DotNetForHtml5.Compiler
                 return string.Empty;
         }
 
-        static void IsReferenceAcceptable(string referenceName, string referenceHintPath, string allowedAssemblies, HashSet<string> flags, bool isBridgeBasedVersion, string nameOfAssembliesThatDoNotContainUserCode, string projectDir, string referencesPaths, string typeForwardingAssemblyPath, out ResultEnum result, out string minimumRequiredCompilerVersionFriendlyNameIfAny)
+        static void IsReferenceAcceptable(string referenceName, string referenceHintPath, string allowedAssemblies, HashSet<string> flags, bool isBridgeBasedVersion, string nameOfAssembliesThatDoNotContainUserCode, string projectDir, string referencesPaths, string typeForwardingAssemblyPath, out ResultEnum result, out string minimumRequiredCompilerVersionFriendlyNameIfAny, bool isSimulatorOnly)
         {
             minimumRequiredCompilerVersionFriendlyNameIfAny = null;
 
@@ -171,7 +171,7 @@ namespace DotNetForHtml5.Compiler
                     // In the Bridge.NET version, we need to preload the CSHTML5 assemblies so that it can find types such as "XmlnsDefinitionAttribute" or "CompilerVersionNumberAttribute":
                     HashSet<string> referencesPathsHasSet = (referencesPaths != null) ? new HashSet<string>(referencesPaths.Split(';')) : new HashSet<string>();
                     referencesPathsHasSet.RemoveWhere(s => !s.ToLower().EndsWith(".dll") || s.Contains("DotNetBrowser") || s.ToLower().EndsWith(@"\bridge.dll"));
-                    foreach (string referencedAssembly in AssembliesLoadHelper.EnsureCoreAssemblyIsFirstInList(referencesPathsHasSet)) // Note: we ensure that the Core assembly is loaded first so that types such as "XmlnsDefinitionAttribute" are known when loading the other assemblies.
+                    foreach (string referencedAssembly in AssembliesLoadHelper.EnsureCoreAssemblyIsFirstInList(referencesPathsHasSet,isSimulatorOnly)) // Note: we ensure that the Core assembly is loaded first so that types such as "XmlnsDefinitionAttribute" are known when loading the other assemblies.
                     {
                         reflectionOnSeparateAppDomain.LoadAssembly(referencedAssembly, loadReferencedAssembliesToo: false, isBridgeBasedVersion: isBridgeBasedVersion, isCoreAssembly: false, nameOfAssembliesThatDoNotContainUserCode: nameOfAssembliesThatDoNotContainUserCode);
                     }

@@ -13,6 +13,7 @@ namespace DotNetForHtml5.Compiler
 
         public const string NAME_OF_CORE_ASSEMBLY = "CSharpXamlForHtml5";
         public const string NAME_OF_CORE_ASSEMBLY_USING_BRIDGE = "CSHTML5";
+        public const string NAME_OF_CORE_ASSEMBLY_USING_BRIDGE_Simulator = "CSHTML5.Simulator";
         public const string NAME_OF_CORE_ASSEMBLY_USING_BLAZOR = "OpenSilver.UwpCompatible";
         public const string NAME_OF_CORE_ASSEMBLY_SLMIGRATION = "SLMigration.CSharpXamlForHtml5";
         public const string NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE = "CSHTML5.Migration";
