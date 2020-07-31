@@ -119,7 +119,7 @@
       Importance="high"/>
     <Message
       Condition="'$(IsSecondPass)'!='True'"
-      Text="CSHTML5 Pass 1 ============= $(OutputPath)\$(AssemblyName).dll === $(OutputAssemblyDirectory)"
+      Text="CSHTML5 Pass 1"
       Importance="high"/>
     <Message
       Condition="'$(IsSecondPass)'=='True'"

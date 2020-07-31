@@ -112,11 +112,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
                 BrowserPreferences.SetChromiumSwitches(@"--disable-web-security");
             }
 
-            BrowserPreferences.SetChromiumSwitches(
-                @"--disable-web-security",
-                @"--allow-file-access-from-files",
-                @"--allow-file-access"
-            );
+           BrowserPreferences.SetChromiumSwitches(
+               @"--disable-web-security",
+               @"--allow-file-access-from-files",
+               @"--allow-file-access"
+            ); 
 
             BrowserContextParams parameters = new BrowserContextParams(_browserUserDataDir)
             {
@@ -425,7 +425,7 @@ ends with "".Browser"" in your solution.";
                 simulatorRootHtml = simulatorRootHtml.Replace("[SCRIPT_TO_READ_SERVICEREFERENCESCLIENTCONFIG_GOES_HERE]", string.Empty);
             }
 
-            simulatorRootHtml = simulatorRootHtml.Replace("..", "[PARENT]");
+            //simulatorRootHtml = simulatorRootHtml.Replace("..", "[PARENT]");
 
             // Set the base URL (it defaults to the Simulator exe location, but it can be specified in the command line arguments):
             string baseURL;
