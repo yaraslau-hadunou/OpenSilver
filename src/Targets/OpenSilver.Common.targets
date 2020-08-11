@@ -17,6 +17,9 @@
   <!--<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition=" '$(CoreCompileDependsOn)' == '' " />-->
   <!-- Note: The condition on the "CoreCompileDependsOn" property defined in "Microsoft.CSharp.targets" is here to avoid a warning if the target was already imported. We could have used any other property defined in "Microsoft.CSharp.targets". -->
 
+  <PropertyGroup>
+    <PackageIdAndVersion>OpenSilver.1.0.0-alpha-006</PackageIdAndVersion>
+  </PropertyGroup>
 
   <!--============================================================
   Add the tasks "CSharpXamlForHtml5BeforeCompile" and "CSharpXamlForHtml5BeforeBuild" to the build process:
@@ -35,6 +38,7 @@
 
   <PropertyGroup>
     <BuildDependsOn>
+      CheckVersionConsistency;
       CSharpXamlForHtml5BeforeBuild;
       $(BuildDependsOn);
     </BuildDependsOn>
@@ -119,6 +123,25 @@
         <LogicalName Condition="'%(EmbeddedResource.Extension)' != '.resx'">%(EmbeddedResource.Identity)</LogicalName>
       </EmbeddedResource>
     </ItemGroup>
+  </Target>
+
+
+  <Target Name="CheckVersionConsistency">
+    <!--============================================================
+      VersionChecker
+      ============================================================-->
+    <VersionChecker
+      ContinueOnError="ErrorAndStop"
+      TargetsVersion="$(PackageIdAndVersion)">
+      <Output TaskParameter="IsVersionChecked" PropertyName="IsVersionChecked"/>
+    </VersionChecker>
+
+    <OnError ExecuteTargets="OnVersionDiscrepancy"/>
+
+  </Target>
+
+  <Target Name="OnVersionDiscrepancy">
+    <Error Text="PLEASE RESTART VISUAL STUDIO TO FIX THESE COMPILATION ERRORS (Alternatively, you may kill the 'msbuild.exe' process without restarting Visual Studio)."/>
   </Target>
 
   <!--============================================================
@@ -365,6 +388,7 @@
       IsBridgeBasedVersion="true"
       IsProcessingCSHTML5Itself="$(NoCSHTML5Reference)"
       NameOfAssembliesThatDoNotContainUserCode="DotNetBrowser.Chromium"
+      IsVersionChecked ="$(IsVersionChecked)"
       />
 
     <!--============================================================

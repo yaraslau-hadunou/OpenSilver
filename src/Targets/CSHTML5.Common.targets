@@ -31,6 +31,10 @@
     <StartArguments>"$(AssemblyName).dll"</StartArguments>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageIdAndVersion>CSHTML5.2.0.0-alpha70-090</PackageIdAndVersion>
+  </PropertyGroup>
+
   <!--============================================================
   Add the tasks "CSharpXamlForHtml5BeforeCompile" and "CSharpXamlForHtml5BeforeBuild" to the build process:
   ============================================================-->
@@ -48,6 +52,7 @@
 
   <PropertyGroup>
     <BuildDependsOn>
+      CheckVersionConsistency;
       CSharpXamlForHtml5BeforeBuild;
       $(BuildDependsOn);
     </BuildDependsOn>
@@ -104,6 +109,26 @@
     <PrepareForRunDependsOn>$(BeforeBridgeNetCompilerTaskCommon);$(PrepareForRunDependsOn)</PrepareForRunDependsOn>
   </PropertyGroup>
 
+
+  <Target Name="CheckVersionConsistency">
+    <!--============================================================
+      VersionChecker
+      ============================================================-->
+    <VersionChecker
+      ContinueOnError="ErrorAndStop"
+      TargetsVersion="$(PackageIdAndVersion)">
+      <Output TaskParameter="IsVersionChecked" PropertyName="IsVersionChecked"/>
+    </VersionChecker>
+
+    <OnError ExecuteTargets="OnVersionDiscrepancy"/>
+
+  </Target>
+
+  <Target Name="OnVersionDiscrepancy">
+    <Error Text="PLEASE RESTART VISUAL STUDIO TO FIX THESE COMPILATION ERRORS (Alternatively, you may kill the 'msbuild.exe' process without restarting Visual Studio)."/>
+  </Target>
+  
+  
   <!--============================================================
   BEFORE BUILD
   ============================================================-->
@@ -178,7 +203,7 @@
     <Error
       Condition="'%(Content.Extension)'=='.xaml' And '%(Content.Generator)'=='' And '$(IsSecondPass)'!='True' And '$(IgnoreMissingCustomTool)'!='True'"
       Text="Before you can build the project, please go to Solution Explorer, select the file '%(Content.FileName).xaml', hit F4, and enter 'MSBuild:Compile' (without the quotes) in the 'Custom Tool' property. You will need to do the same for all XAML files in the project."/>
-
+   
     <!--============================================================
       EntryPointGenerator (only during Pass 2)
       ============================================================-->
@@ -328,6 +353,7 @@
       IsBridgeBasedVersion="true"
       IsProcessingCSHTML5Itself="$(NoCSHTML5Reference)"
       NameOfAssembliesThatDoNotContainUserCode="Bridge"
+      IsVersionChecked ="$(IsVersionChecked)"
       />
 
     <!--============================================================

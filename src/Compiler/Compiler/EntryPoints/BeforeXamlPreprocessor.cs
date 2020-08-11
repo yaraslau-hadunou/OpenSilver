@@ -48,22 +48,29 @@ namespace DotNetForHtml5.Compiler
         public Microsoft.Build.Framework.ITaskItem[] ResolvedReferences { get; set; }
 #endif
 
+        public bool IsVersionChecked { get; set; } = false; //Note: see note in VersionChecker on the property with the same name.
+
         public override bool Execute()
         {
 #if CSHTML5BLAZOR
-            return Execute(IsSecondPass, Flags, ResolvedReferences, SourceAssemblyForPass2, NameOfAssembliesThatDoNotContainUserCode, IsBridgeBasedVersion, IsProcessingCSHTML5Itself, new LoggerThatUsesTaskOutput(this), TypeForwardingAssemblyPath);
+            return Execute(IsSecondPass, Flags, ResolvedReferences, SourceAssemblyForPass2, NameOfAssembliesThatDoNotContainUserCode, IsBridgeBasedVersion, IsProcessingCSHTML5Itself, new LoggerThatUsesTaskOutput(this), TypeForwardingAssemblyPath, IsVersionChecked);
 #else
-            return Execute(IsSecondPass, Flags, ReferencesPaths, SourceAssemblyForPass2, NameOfAssembliesThatDoNotContainUserCode, IsBridgeBasedVersion, IsProcessingCSHTML5Itself, new LoggerThatUsesTaskOutput(this), TypeForwardingAssemblyPath);
+            return Execute(IsSecondPass, Flags, ReferencesPaths, SourceAssemblyForPass2, NameOfAssembliesThatDoNotContainUserCode, IsBridgeBasedVersion, IsProcessingCSHTML5Itself, new LoggerThatUsesTaskOutput(this), TypeForwardingAssemblyPath, IsVersionChecked);
 #endif
         }
 
 #if CSHTML5BLAZOR
-        public static bool Execute(bool isSecondPass, string flagsString, ITaskItem[] resolvedReferences, string sourceAssemblyForPass2, string nameOfAssembliesThatDoNotContainUserCode, bool isBridgeBasedVersion, bool isProcessingCSHTML5Itself, ILogger logger, string typeForwardingAssemblyPath)
+        public static bool Execute(bool isSecondPass, string flagsString, ITaskItem[] resolvedReferences, string sourceAssemblyForPass2, string nameOfAssembliesThatDoNotContainUserCode, bool isBridgeBasedVersion, bool isProcessingCSHTML5Itself, ILogger logger, string typeForwardingAssemblyPath, bool isVersionChecked)
 #else
-        public static bool Execute(bool isSecondPass, string flagsString, string referencePathsString, string sourceAssemblyForPass2, string nameOfAssembliesThatDoNotContainUserCode, bool isBridgeBasedVersion, bool isProcessingCSHTML5Itself, ILogger logger, string typeForwardingAssemblyPath)
+        public static bool Execute(bool isSecondPass, string flagsString, string referencePathsString, string sourceAssemblyForPass2, string nameOfAssembliesThatDoNotContainUserCode, bool isBridgeBasedVersion, bool isProcessingCSHTML5Itself, ILogger logger, string typeForwardingAssemblyPath, bool isVersionChecked)
 #endif
 
         {
+            if (!isVersionChecked)
+            {
+                throw new Exception("PLEASE RESTART VISUAL STUDIO TO FIX THESE COMPILATION ERRORS (Alternatively, you may kill the 'msbuild.exe' process without restarting Visual Studio).");
+            }
+
             string passNumber = (isSecondPass ? "2" : "1");
             string operationName = string.Format("C#/XAML for HTML5: BeforeXamlPreprocessor (pass {0})", passNumber);
             try

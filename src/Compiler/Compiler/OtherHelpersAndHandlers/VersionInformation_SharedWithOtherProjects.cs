@@ -49,5 +49,16 @@ namespace DotNetForHtml5
             return "Version 1.2.4 R1";
 #endif
         }
+
+        public static string GetPackageIdAndVersion()
+        {
+#if BRIDGE
+            return "CSHTML5.2.0.0-alpha70-090";
+#elif CSHTML5BLAZOR
+            return "OpenSilver.1.0.0-alpha-006";
+#else
+            return "CSHTML5.1.2.4";
+#endif
+        }
     }
 }

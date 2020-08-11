@@ -17,7 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-	<NoWarn>CS1591</NoWarn>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <AssemblyName>CSharpXamlForHtml5.Compiler</AssemblyName>
@@ -114,6 +114,7 @@
     <Compile Include="EntryPoints\AfterXamlPreprocessor.cs" />
     <Compile Include="EntryPoints\EntryPointGenerator.cs" />
     <Compile Include="EntryPoints\ResXProcessor.cs" />
+    <Compile Include="EntryPoints\VersionChecker.cs" />
     <Compile Include="EntryPoints\Wrapper_BridgeVersion.cs" />
     <Compile Include="EntryPoints\OutputPathsEraser.cs" />
     <Compile Include="EntryPoints\ResourcesProcessor.cs" />
