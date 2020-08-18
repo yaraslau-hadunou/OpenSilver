@@ -130,10 +130,10 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             }
 
             BrowserPreferences.SetChromiumSwitches(
-                @"--disable-web-security",
-                @"--allow-file-access-from-files",
-                @"--allow-file-access"
-            );
+                  @"--disable-web-security",
+                  @"--allow-file-access-from-files",
+                  @"--allow-file-access"
+              );
 
             BrowserContextParams parameters = new BrowserContextParams(_browserUserDataDir)
             {
@@ -459,10 +459,13 @@ ends with "".Browser"" in your solution.";
 
 
             // Load the page:
+#if OPENSILVER
             MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", "http://cshtml5-simulator/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
+#else
             //Note: (see commit c1f98763) the following line of commented code was in a #else (and the one above in a #if OPENSILVER) to fix an issue in FBC MM2 where Interop calls would return null or undefined when they shouldn't. It is probably a case where we are redirected to another context (for example when signing in a Microsoft account before being brought back).
             //      It seemed to fix it but it causes the SOAP calls to fail in the simulator (tried in the Showcase) and retrying with FBC MM2 shows that the issue was not actually fixed (or it is missing another change that was mistakenly considered to not be part of the fix).
-            //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", baseURL + "/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
+            MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", baseURL + "/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
+#endif
         }
 
         void OnLoaded()
@@ -1868,7 +1871,7 @@ Click OK to continue.";
             }
         }
 
-        #region Element Picker for XAML Inspection
+#region Element Picker for XAML Inspection
 
         void StartElementPickerForInspection()
         {
@@ -1936,7 +1939,7 @@ Click OK to continue.";
                 StopElementPickerForInspection();
         }
 
-        #endregion
+#endregion
 
 
         private bool IsNetworkAvailable()
@@ -1944,14 +1947,14 @@ Click OK to continue.";
             return NetworkInterface.GetIsNetworkAvailable();
         }
 
-        #region profil popup
+#region profil popup
 
         private void ButtonLogout_Click(object sender, RoutedEventArgs e)
         {
             LicenseChecker.LogOut();
         }
 
-        #endregion
+#endregion
 
         private void LaunchOptimizerButton_Click(object sender, RoutedEventArgs e)
         {
