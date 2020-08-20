@@ -159,6 +159,7 @@
                                 <MenuItem Header="Re-instantiate App.xaml.cs" Cursor="Hand" Click="ButtonRestart_Click"/>
                                 <MenuItem Header="Display the number of DOM elements..." Cursor="Hand" Click="ButtonStats_Click"/>
                                 <MenuItem Header="Clear cookies and cache" Cursor="Hand" Click="ButtonClearCookiesAndCache_Click"/>
+                                <MenuItem Header="Open Developper tools page" Cursor="Hand" Click="ButtonOpenDevelopperToolsPage_Click"/>
                                 <CheckBox x:Name="CheckBoxCORS" Content="Ignore and bypass cross-domain calls errors (CORS)"/>
                             </ContextMenu>
                         </Border.ContextMenu>

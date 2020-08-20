@@ -132,7 +132,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             BrowserPreferences.SetChromiumSwitches(
                 @"--disable-web-security",
                 @"--allow-file-access-from-files",
-                @"--allow-file-access"
+                @"--allow-file-access",
+                @"--remote-debugging-port=9222"
             );
 
             BrowserContextParams parameters = new BrowserContextParams(_browserUserDataDir)
@@ -1059,6 +1060,12 @@ Click OK to continue.";
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        void ButtonOpenDevelopperToolsPage_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("chrome.exe", MainWebBrowser.Browser.GetRemoteDebuggingURL());
+        }
+            
 
         void ButtonSeeOutputFolder_Click(object sender, RoutedEventArgs e)
         {
