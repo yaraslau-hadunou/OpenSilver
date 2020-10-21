@@ -189,22 +189,17 @@ namespace DotNetForHtml5.Compiler
                                     string codeToAccessTheEnumerable;
                                     if (isAttachedProperty)
                                     {
-                                        string elementTypeInCSharp = reflectionOnSeparateAppDomain.GetCSharpEquivalentOfXamlTypeAsString(elementName.Namespace.NamespaceName, elementName.LocalName, assemblyNameIfAny, ifTypeNotFoundTryGuessing: isFirstPass);
-                                        if (elementTypeInCSharp == namespaceSystemWindows + ".VisualStateManager" && propertyName == "VisualStateGroups")
-                                        {
-                                            if (DoesClassInheritFromFrameworkTemplate(elementThatIsRootOfTheCurrentNamescope.Name.LocalName))
-                                            {
-                                                codeToAccessTheEnumerable = string.Format("templateOwner_{0}.INTERNAL_GetVisualStateGroups()", GetUniqueName(elementThatIsRootOfTheCurrentNamescope)); //codeToAccessTheEnumerable = "global::Windows.UI.Xaml.VisualStateManager.GetVisualStateGroups(templateOwner)";
-                                            }
-                                            else
-                                            {
-                                                codeToAccessTheEnumerable = "((" + namespaceSystemWindowsControls + ".Control)this).INTERNAL_GetVisualStateGroups()"; //Note: we cast so that the user received a more meaningful error message if the root type of the XAML is not a Control. //codeToAccessTheEnumerable = "global::Windows.UI.Xaml.VisualStateManager.GetVisualStateGroups(this)";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            codeToAccessTheEnumerable = string.Format("{0}.Get{1}({2})", elementTypeInCSharp, propertyName, parentElementUniqueNameOrThisKeyword);
-                                        }
+                                        string elementTypeInCSharp = reflectionOnSeparateAppDomain.GetCSharpEquivalentOfXamlTypeAsString(
+                                            elementName.Namespace.NamespaceName, 
+                                            elementName.LocalName, 
+                                            assemblyNameIfAny, 
+                                            ifTypeNotFoundTryGuessing: isFirstPass);
+
+                                        codeToAccessTheEnumerable = string.Format(
+                                            "{0}.Get{1}({2})", 
+                                            elementTypeInCSharp, 
+                                            propertyName, 
+                                            parentElementUniqueNameOrThisKeyword);
                                     }
                                     else
                                     {
