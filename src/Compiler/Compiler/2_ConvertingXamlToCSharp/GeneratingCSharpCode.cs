@@ -82,8 +82,9 @@ namespace DotNetForHtml5.Compiler
                     bool isElementInRootNamescope = (elementThatIsRootOfTheCurrentNamescope.Parent == null); // Check if the root of the current namescope is also the root of the XAML (note: to be the root of the XAML means that the parent is null).
 
                     // Check if the element is DataTemplate property, or a general property, or an object:
-                    bool isDataTemplateProperty = (element.Name.Namespace == DefaultXamlNamespace && element.Name.LocalName.Contains(".") && DoesClassInheritFromFrameworkTemplate(element.Name.LocalName.Substring(0, element.Name.LocalName.IndexOf('.'))));
                     bool isAProperty = element.Name.LocalName.Contains('.');
+                    bool isDataTemplateProperty = (isAProperty && DoesClassInheritFromFrameworkTemplate(element.Parent)
+                        && element.Name.LocalName.Split('.')[1] == "ContentPropertyUsefulOnlyDuringTheCompilation");
                     #region CASE: the element is a DataTemplate property
                     if (isDataTemplateProperty)
                     {
@@ -1320,7 +1321,7 @@ var {4} = {2}.GetValue({1});
             XElement currentElement = element;
             while (element.Parent != null)
             {
-                if (element.Name.Namespace == DefaultXamlNamespace && DoesClassInheritFromFrameworkTemplate(element.Name.LocalName))
+                if (DoesClassInheritFromFrameworkTemplate(element))
                 {
                     return element;
                 }
@@ -1461,9 +1462,12 @@ var {4} = {2}.GetValue({1});
             return (className == "global::Windows.UI.Xaml.Application" || className == "global::System.Windows.Application");
         }
 
-        static bool DoesClassInheritFromFrameworkTemplate(string classLocalName) //todo: add support for namespace for more precision
+        private static bool DoesClassInheritFromFrameworkTemplate(XElement element)
         {
-            return classLocalName == "DataTemplate" || classLocalName == "ItemsPanelTemplate" || classLocalName == "ControlTemplate";
+            return element.Name == (DefaultXamlNamespace + "ControlTemplate") ||
+                   element.Name == (DefaultXamlNamespace + "DataTemplate") ||
+                   element.Name == (DefaultXamlNamespace + "ItemsPanelTemplate") ||
+                   element.Name.NamespaceName != null && element.Name.LocalName == "HierarchicalDataTemplate";
         }
 
         static List<string> GetListThatContainsAdditionalCodeFromDictionary(XElement elementThatIsRootOfTheCurrentNamescope, Dictionary<XElement, List<string>> namescopeRootToListOfAdditionalCode)
