@@ -143,6 +143,9 @@ namespace Windows.UI.Xaml.Controls
         {
             if (Source != null)
             {
+                //make the image visible again in case we set it to none before:
+                CSHTML5.Interop.ExecuteJavaScript("$0.style.display = 'block'", _imageDiv);
+
                 Loaded += Image_Loaded;
                 if (Source is BitmapImage)
                 {
@@ -170,6 +173,9 @@ namespace Windows.UI.Xaml.Controls
             }
             else
             {
+                //hide the potential broken image that appears on Chrome and IE:
+                CSHTML5.Interop.ExecuteJavaScript("$0.style.display = 'none'", _imageDiv);
+
                 INTERNAL_HtmlDomManager.SetDomElementAttribute(_imageDiv, "src", "");
             }
             INTERNAL_HtmlDomManager.SetDomElementAttribute(_imageDiv, "alt", " "); //the text displayed when the image cannot be found. We set it as an empty string since there is nothing in Xaml
@@ -243,11 +249,17 @@ namespace Windows.UI.Xaml.Controls
 
         void bmpImage_ImageOpened(object sender, RoutedEventArgs e)
         {
+            //make the image visible again if it failed before:
+            CSHTML5.Interop.ExecuteJavaScript("$0.style.display = 'block'", _imageDiv);
+
             OnImageOpened(e);
         }
 
         void bmpImage_ImageFailed(object sender, ExceptionRoutedEventArgs e)
         {
+            //hide the potential broken image that appears on Chrome and IE:
+            CSHTML5.Interop.ExecuteJavaScript("$0.style.display = 'none'", _imageDiv);
+
             OnImageFailed(e);
         }
 
