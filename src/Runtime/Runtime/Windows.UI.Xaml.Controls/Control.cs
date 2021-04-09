@@ -423,7 +423,8 @@ namespace Windows.UI.Xaml.Controls
                 {
                     // When the FontSize changes, we also want to set the "Line-Height" CSS property in order to get the exact same result as in Silverlight:
                     var domStyle = INTERNAL_HtmlDomManager.GetFrameworkElementOuterStyleForModification((UIElement)instance);
-                    domStyle.lineHeight = "125%";
+                    //domStyle.lineHeight = "100%";
+                    domStyle.lineHeight = "normal";
                 },
                 GetCSSEquivalent = (instance) =>
                 {
