@@ -12,6 +12,15 @@
 *  
 \*====================================================================================*/
 
+using System;
+using System.Diagnostics;
+using System.Linq;
+
+#if MIGRATION
+using System.Windows.Media;
+#else
+using Windows.UI.Xaml.Media;
+#endif
 
 #if MIGRATION
 namespace System.Windows.Controls
@@ -24,7 +33,7 @@ namespace Windows.UI.Xaml.Controls
     /// </summary>
     internal static class VisualStates //todo: remove/move this class
     {
-        #region GroupCommon
+#region GroupCommon
         /// <summary>
         /// Common state group.
         /// </summary>
@@ -54,9 +63,9 @@ namespace Windows.UI.Xaml.Controls
         /// Disabled state of the Common state group.
         /// </summary>
         public const string StateDisabled = "Disabled";
-        #endregion GroupCommon
+#endregion GroupCommon
 
-        #region GroupFocus
+#region GroupFocus
         /// <summary>
         /// Focus state group.
         /// </summary>
@@ -71,9 +80,9 @@ namespace Windows.UI.Xaml.Controls
         /// Focused state of the Focus state group.
         /// </summary>
         public const string StateFocused = "Focused";
-        #endregion GroupFocus
+#endregion GroupFocus
 
-        #region GroupSelection
+#region GroupSelection
         /// <summary>
         /// Selection state group.
         /// </summary>
@@ -93,9 +102,9 @@ namespace Windows.UI.Xaml.Controls
         /// Selected inactive state of the Selection state group.
         /// </summary>
         public const string StateSelectedInactive = "SelectedInactive";
-        #endregion GroupSelection
+#endregion GroupSelection
 
-        #region GroupExpansion
+#region GroupExpansion
         /// <summary>
         /// Expansion state group.
         /// </summary>
@@ -110,9 +119,9 @@ namespace Windows.UI.Xaml.Controls
         /// Collapsed state of the Expansion state group.
         /// </summary>
         public const string StateCollapsed = "Collapsed";
-        #endregion GroupExpansion
+#endregion GroupExpansion
 
-        #region GroupPopup
+#region GroupPopup
         /// <summary>
         /// Popup state group.
         /// </summary>
@@ -127,9 +136,9 @@ namespace Windows.UI.Xaml.Controls
         /// Closed state of the Popup state group.
         /// </summary>
         public const string StatePopupClosed = "PopupClosed";
-        #endregion
+#endregion
 
-        #region GroupValidation
+#region GroupValidation
         /// <summary>
         /// ValidationStates state group.
         /// </summary>
@@ -164,9 +173,9 @@ namespace Windows.UI.Xaml.Controls
         /// Invalid, unfocused state for the ValidationStates group.
         /// </summary>
         public const string StateInvalidUnfocused = "InvalidUnfocused";
-        #endregion
+#endregion
 
-        #region GroupExpandDirection
+#region GroupExpandDirection
         /// <summary>
         /// ExpandDirection state group.
         /// </summary>
@@ -191,9 +200,9 @@ namespace Windows.UI.Xaml.Controls
         /// Right expand direction state of ExpandDirection state group.
         /// </summary>
         public const string StateExpandRight = "ExpandRight";
-        #endregion
+#endregion
 
-        #region GroupHasItems
+#region GroupHasItems
         /// <summary>
         /// HasItems state group.
         /// </summary>
@@ -208,9 +217,9 @@ namespace Windows.UI.Xaml.Controls
         /// NoItems state of the HasItems state group.
         /// </summary>
         public const string StateNoItems = "NoItems";
-        #endregion GroupHasItems
+#endregion GroupHasItems
 
-        #region GroupIncrease
+#region GroupIncrease
         /// <summary>
         /// Increment state group.
         /// </summary>
@@ -225,9 +234,9 @@ namespace Windows.UI.Xaml.Controls
         /// State disabled for increment group.
         /// </summary>
         public const string StateIncreaseDisabled = "IncreaseDisabled";
-        #endregion GroupIncrease
+#endregion GroupIncrease
 
-        #region GroupDecrease
+#region GroupDecrease
         /// <summary>
         /// Decrement state group.
         /// </summary>
@@ -242,9 +251,9 @@ namespace Windows.UI.Xaml.Controls
         /// State disabled for decrement group.
         /// </summary>
         public const string StateDecreaseDisabled = "DecreaseDisabled";
-        #endregion GroupDecrease
+#endregion GroupDecrease
 
-        #region GroupIteractionMode
+#region GroupIteractionMode
         /// <summary>
         /// InteractionMode state group.
         /// </summary>
@@ -259,9 +268,9 @@ namespace Windows.UI.Xaml.Controls
         /// Display of the DisplayMode state group.
         /// </summary>
         public const string StateDisplay = "Display";
-        #endregion GroupIteractionMode
+#endregion GroupIteractionMode
 
-        #region GroupLocked
+#region GroupLocked
         /// <summary>
         /// DisplayMode state group.
         /// </summary>
@@ -276,9 +285,9 @@ namespace Windows.UI.Xaml.Controls
         /// Display of the DisplayMode state group.
         /// </summary>
         public const string StateUnlocked = "Unlocked";
-        #endregion GroupLocked
+#endregion GroupLocked
 
-        #region GroupActive
+#region GroupActive
         /// <summary>
         /// Active state.
         /// </summary>
@@ -293,9 +302,9 @@ namespace Windows.UI.Xaml.Controls
         /// Active state group.
         /// </summary>
         public const string GroupActive = "ActiveStates";
-        #endregion GroupActive
+#endregion GroupActive
 
-        #region GroupWatermark
+#region GroupWatermark
         /// <summary>
         /// Non-watermarked state.
         /// </summary>
@@ -310,9 +319,9 @@ namespace Windows.UI.Xaml.Controls
         /// Watermark state group.
         /// </summary>
         public const string GroupWatermark = "WatermarkStates";
-        #endregion GroupWatermark
+#endregion GroupWatermark
 
-        #region GroupCalendarButtonFocus
+#region GroupCalendarButtonFocus
         /// <summary>
         /// Unfocused state for Calendar Buttons.
         /// </summary>
@@ -327,9 +336,9 @@ namespace Windows.UI.Xaml.Controls
         /// CalendarButtons Focus state group.
         /// </summary>
         public const string GroupCalendarButtonFocus = "CalendarButtonFocusStates";
-        #endregion GroupCalendarButtonFocus
+#endregion GroupCalendarButtonFocus
 
-        #region GroupBusyStatus
+#region GroupBusyStatus
         /// <summary>
         /// Busy state for BusyIndicator.
         /// </summary>
@@ -344,9 +353,9 @@ namespace Windows.UI.Xaml.Controls
         /// Busyness group name.
         /// </summary>
         public const string GroupBusyStatus = "BusyStatusStates";
-        #endregion
+#endregion
 
-        #region GroupVisibility
+#region GroupVisibility
         /// <summary>
         /// Visible state name for BusyIndicator.
         /// </summary>
@@ -361,9 +370,9 @@ namespace Windows.UI.Xaml.Controls
         /// BusyDisplay group.
         /// </summary>
         public const string GroupVisibility = "VisibilityStates";
-        #endregion
+#endregion
 
-        #region GroupDescription
+#region GroupDescription
 
         /// <summary>
         /// VSM group for description states
@@ -380,7 +389,7 @@ namespace Windows.UI.Xaml.Controls
         /// </summary>
         public const string StateHasDescription = "HasDescription";
 
-        #endregion GroupDescription
+#endregion GroupDescription
 
         /// <summary>
         /// Use VisualStateManager to change the visual state of the control.
@@ -409,6 +418,55 @@ namespace Windows.UI.Xaml.Controls
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the implementation root of the Control.
+        /// </summary>
+        /// <param name="dependencyObject">The DependencyObject.</param>
+        /// <remarks>
+        /// Implements Silverlight's corresponding internal property on Control.
+        /// </remarks>
+        /// <returns>Returns the implementation root or null.</returns>
+        public static FrameworkElement GetImplementationRoot(DependencyObject dependencyObject)
+        {
+            Debug.Assert(dependencyObject != null, "DependencyObject should not be null.");
+            return (1 == VisualTreeHelper.GetChildrenCount(dependencyObject)) ?
+                VisualTreeHelper.GetChild(dependencyObject, 0) as FrameworkElement :
+                null;
+        }
+
+        /// <summary>
+        /// This method tries to get the named VisualStateGroup for the 
+        /// dependency object. The provided object's ImplementationRoot will be 
+        /// looked up in this call.
+        /// </summary>
+        /// <param name="dependencyObject">The dependency object.</param>
+        /// <param name="groupName">The visual state group's name.</param>
+        /// <returns>Returns null or the VisualStateGroup object.</returns>
+        public static VisualStateGroup TryGetVisualStateGroup(DependencyObject dependencyObject, string groupName)
+        {
+            FrameworkElement root = GetImplementationRoot(dependencyObject);
+            if (root == null)
+            {
+                return null;
+            }
+
+#if false
+            return VisualStateManager.GetVisualStateGroups(root)
+                .OfType<VisualStateGroup>()
+                .Where(group => string.CompareOrdinal(groupName, group.Name) == 0)
+                .FirstOrDefault();
+#else
+            return ((root as Control)?.INTERNAL_GetVisualStateGroups() ?? Enumerable.Empty<VisualStateGroup>())
+                .OfType<VisualStateGroup>()
+#if NETSTANDARD
+                .Where(group => string.CompareOrdinal(groupName, group.Name) == 0)
+#elif BRIDGE
+                .Where(group => string.Compare(groupName, group.Name, StringComparison.Ordinal) == 0)
+#endif
+                .FirstOrDefault();
+#endif
         }
     }
 }

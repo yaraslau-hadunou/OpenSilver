@@ -13,29 +13,24 @@
 \*====================================================================================*/
 
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 #if MIGRATION
-namespace System.Windows.Input
+namespace System.Windows
 #else
-namespace Windows.UI.Xaml.Input
+namespace Windows.UI.Xaml
 #endif
 {
-#if WORKINPROGRESS
-    [OpenSilver.NotImplemented]
-#if MIGRATION
-    public partial class MouseWheelEventArgs : MouseEventArgs
-#else
-    public partial class MouseWheelEventArgs : PointerRoutedEventArgs
-#endif
+    /// <summary>
+    /// Defines constants that specify the content flow direction for text and UI elements.
+    /// </summary>
+    public enum FlowDirection
     {
-        [OpenSilver.NotImplemented]
-        public int Delta { get; private set; }
+        /// <summary>
+        /// Indicates that content should flow from left to right.
+        /// </summary>
+        LeftToRight = 0,
+        /// <summary>
+        /// Indicates that content should flow from right to left.
+        /// </summary>
+        RightToLeft = 1,
     }
-#endif
 }

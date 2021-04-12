@@ -1,5 +1,4 @@
 ﻿
-
 /*===================================================================================
 * 
 *   Copyright (c) Userware/OpenSilver.net
@@ -20,38 +19,32 @@ namespace Windows.UI.Xaml.Controls
 #endif
 {
     /// <summary>
-    /// Specifies when the Click event should be raised for a control.
+    /// Specifies when the <see cref="Primitives.ButtonBase.Click"/> event
+    /// should be raised for a control.
     /// </summary>
     public enum ClickMode
     {
-        // Summary:
-        //     Specifies that the System.Windows.Controls.Primitives.ButtonBase.Click event
-        //     should be raised when the left mouse button is pressed and released, and
-        //     the mouse pointer is over the control. If you are using the keyboard, specifies
-        //     that the System.Windows.Controls.Primitives.ButtonBase.Click event should
-        //     be raised when the SPACEBAR or ENTER key is pressed and released, and the
-        //     control has keyboard focus.
         /// <summary>
-        /// Specifies that the Click event
-        /// should be raised when the left mouse button is pressed and released, and
-        /// the mouse pointer is over the control.
+        /// Specifies that the <see cref="Primitives.ButtonBase.Click"/> event
+        /// should be raised when the left mouse button is pressed and released, and the
+        /// mouse pointer is over the control. If you are using the keyboard, specifies that
+        /// the <see cref="Primitives.ButtonBase.Click"/> event should be raised
+        /// when the SPACEBAR or ENTER key is pressed and released, and the control has keyboard
+        /// focus.
         /// </summary>
         Release = 0,
-
         /// <summary>
-        /// Specifies that the Click event
-        /// should be raised when the mouse button is pressed and the mouse pointer is
-        /// over the control.
+        /// Specifies that the <see cref="Primitives.ButtonBase.Click"/> event
+        /// should be raised when the mouse button is pressed and the mouse pointer is over
+        /// the control. If you are using the keyboard, specifies that the 
+        /// <see cref="Primitives.ButtonBase.Click"/> event should be raised when the 
+        /// SPACEBAR or ENTER is pressed and the control has keyboard focus.
         /// </summary>
         Press = 1,
-
-#if WORKINPROGRESS
         /// <summary>
-        /// Specifies that the Click event
+        /// Specifies that the <see cref="Primitives.ButtonBase.Click"/> event
         /// should be raised when the mouse pointer moves over the control.
         /// </summary>
         Hover = 2,
-#endif
-
     }
 }

@@ -51,6 +51,9 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("CSharpXamlForHtml5.Simulator")]
 [assembly: InternalsVisibleTo("Runtime.OpenSilver.Tests")]
+#if BRIDGE
+[assembly: InternalsVisibleTo("CSHTML5.Controls.Toolkit")]
+#endif
 
 [assembly: System.Windows.Markup.XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml", "System.Windows.Markup")] // This is used for example in the {x:Static ...} markup extension.
 [assembly: System.Windows.Markup.XmlnsDefinition("http://schemas.microsoft.com/expression/2010/interactions", "Microsoft.Expression.Interactivity.Core")]
