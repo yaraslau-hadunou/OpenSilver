@@ -269,25 +269,31 @@ namespace DotNetForHtml5.Compiler
 #if CSHTML5BLAZOR
                 switch (assemblyName)
                 {
+                    case "System.Windows.Controls.Toolkit":
+                        assemblyName = "OpenSilver.Controls.Toolkit";
+                        break;
                     case "System.Windows.Controls.Data.DataForm.Toolkit":
                         assemblyName = "OpenSilver.Controls.Data.DataForm.Toolkit";
-                        return;
+                        break;                    
                     default:
                         if (assemblyName == "System" || assemblyName.StartsWith("System."))
                         {
                             assemblyName = Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR;
                         }
-                        return;
+                        break;
                 }
-#elif BRIDE
+#elif BRIDGE
                 switch (assemblyName)
                 {
+                    case "System.Windows.Controls.Toolkit":
+                        assemblyName = "CSHTML5.Controls.Toolkit";
+                        break;
                     default:
                         if (assemblyName == "System" || assemblyName.StartsWith("System."))
                         {
                             assemblyName = Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE;
                         }
-                        return;
+                        break;
                 }                    
 #else // JSIL, Obsolete, remove this
                 switch (assemblyName)
@@ -297,7 +303,7 @@ namespace DotNetForHtml5.Compiler
                         {
                             assemblyName = Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION;
                         }
-                        return;
+                        break;
                 }
 #endif
             }
