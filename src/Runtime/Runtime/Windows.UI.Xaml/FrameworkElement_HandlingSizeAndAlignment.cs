@@ -146,6 +146,7 @@ namespace Windows.UI.Xaml
 #else
             RefreshHeight(frameworkElement);
 #endif
+            frameworkElement.HandleSizeSet();
         }
 
 #if PREVIOUS_WAY_OF_HANDLING_ALIGNMENTS
@@ -239,6 +240,15 @@ namespace Windows.UI.Xaml
 #else
             RefreshWidth(frameworkElement);
 #endif
+            frameworkElement.HandleSizeSet();
+        }
+
+        /// <summary>
+        /// Override this method to call some additional code when the Width or Height properties are set.
+        /// </summary>
+        internal virtual void HandleSizeSet()
+        {
+            // By default: do nothing.
         }
 
 #if PREVIOUS_WAY_OF_HANDLING_ALIGNMENTS

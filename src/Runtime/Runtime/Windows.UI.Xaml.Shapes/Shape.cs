@@ -466,6 +466,16 @@ namespace Windows.UI.Xaml.Shapes
             ScheduleRedraw();
         }
 
+        internal override void HandleSizeSet()
+        {
+            //Note: The SizeChanged event is not sufficient because the _canvasDomElement has its size set when drawing, and setting this.Width to a smaller value
+            //      will set it on INTERNAL_OuterDomElement but not on the _canvasDomElement, which will prevent the actual size to be reduced, and thus preventing
+            //      the SizeChanged event from being fired.
+            //      Because of that, we Schedule a redraw whenever Width or Height are set.
+            base.HandleSizeSet();
+            ScheduleRedraw();
+        }
+
         #endregion
 
         #region Helper Methods
