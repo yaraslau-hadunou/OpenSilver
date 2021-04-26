@@ -419,13 +419,6 @@ namespace Windows.UI.Xaml.Controls
         public static readonly DependencyProperty FontSizeProperty =
             DependencyProperty.Register("FontSize", typeof(double), typeof(Control), new PropertyMetadata(11d)
             {
-                MethodToUpdateDom = (instance, newValue) =>
-                {
-                    // When the FontSize changes, we also want to set the "Line-Height" CSS property in order to get the exact same result as in Silverlight:
-                    var domStyle = INTERNAL_HtmlDomManager.GetFrameworkElementOuterStyleForModification((UIElement)instance);
-                    //domStyle.lineHeight = "100%";
-                    domStyle.lineHeight = "normal";
-                },
                 GetCSSEquivalent = (instance) =>
                 {
                     return new CSSEquivalent()
@@ -449,6 +442,48 @@ namespace Windows.UI.Xaml.Controls
                     };
                 },
             });
+
+
+        //-----------------------
+        // LINEHEIGHT (CSS PROPERTY)
+        //-----------------------
+        // NOTE: the commit that introduced this DependencyProperty slightly changes the original behaviour. To get the same appearance as before, you can set this property on MainPage, most likely to the value '125%'.
+        /// <summary>
+        /// Used to set the line-height css property on the element. Its value is automatically inherited. For the possible values and their meaning, see https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
+        /// </summary>
+        public string LineHeight
+        {
+            get { return (string)GetValue(LineHeightProperty); }
+            set { SetValue(LineHeightProperty, value); }
+        }
+        /// <summary>
+        /// Identifies the LineHeight dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LineHeightProperty =
+            DependencyProperty.Register("LineHeight", typeof(string), typeof(Control), new PropertyMetadata(null)
+            {
+                MethodToUpdateDom = (instance, value) =>
+                {
+                    ((Control)instance).UpdateCSSLineHeight((string)value);
+                }
+            });
+
+        void UpdateCSSLineHeight(string value)
+        {
+            if (INTERNAL_VisualTreeManager.IsElementInVisualTree(this))
+            {
+                var domStyle = INTERNAL_HtmlDomManager.GetFrameworkElementOuterStyleForModification(this);
+                if (value != null)
+                {
+                    domStyle.lineHeight = value;
+                }
+                else
+                {
+                    domStyle.lineHeight = "";
+                }
+            }
+        }
+
 
         //-----------------------
         // TEXTDECORATION
