@@ -30,7 +30,7 @@ They are located in the **`Runtime.OpenSilver.Tests`** project which is containe
 
 They are located in the **`TestApplication`** project which is contained in the main `OpenSilver.sln` solution. It is a project of type OpenSilver that is intended to be run either in the browser or in the Simulator. The same project also exists in Silverlight so that you can compare the result of the OpenSilver version and the Silverlight version of the GUI.
 
-*Note: the test projects are currently work-in-progress: the Silverligth version may not be immediately available, and we are reorganizing the TestApplication so that the features are split into categories with a menu to navigate.*
+*Note: the test projects are currently work-in-progress: we are reorganizing the TestApplication so that the features are split into categories with a menu to navigate.*
 
 ## How to contribute to the documention
 
