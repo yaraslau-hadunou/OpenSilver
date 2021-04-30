@@ -87,6 +87,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         {
             InitializeComponent();
 
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+            Application.Current.DispatcherUnhandledException += App_DispatcherUnhandledException;
+
             MessageToDisplayDuringFirstTimeCompilation.Visibility = Visibility.Collapsed;
             MessageToDisplayWhenCompilationIsSlow.Visibility = Visibility.Collapsed;
 
@@ -217,6 +222,12 @@ ends with "".Browser"" in your solution.";
             WelcomeTextBlock.Visibility = Visibility.Visible;
 #endif
 
+        }
+
+        void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            SimulatorProxy.ShowExceptionStatic(e.Exception);
+            e.Handled = true;
         }
 
         private void MainWindow_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
