@@ -33,7 +33,7 @@
                                 <VisualState Name="PointerOver">
                                     <Storyboard>
                                         <DoubleAnimation Duration="0" Storyboard.TargetName="BackgroundAnimation" Storyboard.TargetProperty="Opacity" To="1"/>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background"
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Rectangle.Fill)"
                                                                        Storyboard.TargetName="BackgroundGradient">
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
@@ -51,7 +51,7 @@
                                 <VisualState Name="Pressed">
                                     <Storyboard>
                                         <DoubleAnimation Duration="0" Storyboard.TargetName="BackgroundAnimation" Storyboard.TargetProperty="Opacity" To="1"/>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background"
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Rectangle.Fill)"
                                                                        Storyboard.TargetName="BackgroundGradient">
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
@@ -80,16 +80,16 @@
                                 BorderBrush="{TemplateBinding BorderBrush}">
                             <Grid Background="{TemplateBinding Background}"  Margin="1">
                                 <Border Opacity="0" x:Name="BackgroundAnimation" Background="#FF448DCA" />
-                                <Border x:Name="BackgroundGradient" >
-                                    <Border.Background>
+                                <Rectangle x:Name="BackgroundGradient" >
+                                    <Rectangle.Fill>
                                         <LinearGradientBrush StartPoint=".7,0" EndPoint=".7,1">
                                             <GradientStop Color="#FFFFFFFF" Offset="0" />
                                             <GradientStop Color="#F9FFFFFF" Offset="0.375" />
                                             <GradientStop Color="#E5FFFFFF" Offset="0.625" />
                                             <GradientStop Color="#C6FFFFFF" Offset="1" />
                                         </LinearGradientBrush>
-                                    </Border.Background>
-                                </Border>
+                                    </Rectangle.Fill>
+                                </Rectangle>
                             </Grid>
                         </Border>
                         <ContentPresenter x:Name="ContentPresenter"
