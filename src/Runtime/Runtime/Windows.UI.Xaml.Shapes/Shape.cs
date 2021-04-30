@@ -498,6 +498,9 @@ namespace Windows.UI.Xaml.Shapes
                 strokeThickness = 0;
             }
 
+            maxX = shapeActualSize.Width;
+            maxY = shapeActualSize.Height;
+
             INTERNAL_ShapesDrawHelpers.GetMultiplicatorsAndOffsetForStretch(shape, 
                                                                             strokeThickness, 
                                                                             minX, 
