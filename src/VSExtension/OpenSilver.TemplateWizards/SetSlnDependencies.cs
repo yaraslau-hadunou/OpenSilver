@@ -1,6 +1,7 @@
 ﻿using EnvDTE;
 using Microsoft.VisualStudio.TemplateWizard;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace OpenSilver.TemplateWizards
 {
@@ -44,7 +45,8 @@ namespace OpenSilver.TemplateWizards
 
             if (projectMain == null || projectSimulator == null)
             {
-                throw new WizardCancelledException("Some projects could not be resolved");
+                MessageBox.Show($"Error while setting build dependencies.\nYou may need to manually set a solution-wide build dependency between projects {_solutionName}.Simulator and {_solutionName}", "Error");
+                return;
             }
 
             BuildDependency dependency = _solution.SolutionBuild.BuildDependencies.Item(projectSimulator.UniqueName);
@@ -60,7 +62,7 @@ namespace OpenSilver.TemplateWizards
             }
             else
             {
-                throw new WizardCancelledException("'automationObject' is not of type DTE");
+                throw new WizardBackoutException("'automationObject' is not of type DTE");
             }
         }
 

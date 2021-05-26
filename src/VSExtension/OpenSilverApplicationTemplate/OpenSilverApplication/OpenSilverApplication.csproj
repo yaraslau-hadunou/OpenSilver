@@ -19,8 +19,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenSilver" Version="1.0.0-alpha-019" />
-  </ItemGroup>
+    $if$($ext_opensilverbuildtype$ == stable)<PackageReference Include="OpenSilver" Version="1.0.0-alpha-019" />
+    $endif$$if$($ext_opensilverbuildtype$ == workinprogress)<PackageReference Include="OpenSilver.WorkInProgress" Version="1.0.0-alpha-019" />
+  $endif$</ItemGroup>
 
   <ItemGroup>
     <Content Include="MainPage.xaml">

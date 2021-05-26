@@ -37,8 +37,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
-    <PackageReference Include="OpenSilver" Version="1.0.0-alpha-019" />
-  </ItemGroup>
+    $if$($ext_opensilverbuildtype$ == stable)<PackageReference Include="OpenSilver" Version="1.0.0-alpha-019" />
+    $endif$$if$($ext_opensilverbuildtype$ == workinprogress)<PackageReference Include="OpenSilver.WorkInProgress" Version="1.0.0-alpha-019" />
+  $endif$</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\$ext_safeprojectname$\$ext_safeprojectname$.csproj" />
